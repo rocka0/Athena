@@ -6,7 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    {% block title %}<title>Athena</title>{% endblock %}
+    {% block title %}
+        <title>Athena</title>
+    {% endblock %}
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
@@ -268,38 +270,62 @@
             <div class="mdl-layout--large-screen-only mdl-layout__header-row">
             </div>
             <div class="mdl-layout--large-screen-only mdl-layout__header-row">
-                <h3>Athena: EZQnA</h3>
+                <h3>Athena || Your Q &amp; A Website</h3>
             </div>
             <div class="mdl-layout--large-screen-only mdl-layout__header-row">
             </div>
             <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
+                <!-- TODO: Add is-active class depending on which page it is -->
                 <a href="" class="mdl-layout__tab">Log In</a>
                 <a href="" class="mdl-layout__tab">Sign Up</a>
             </div>
         </header>
         <main class="mdl-layout__content">
             <div class="mdl-layout__tab-panel is-active" id="overview">
-                {% block content %}{% endblock %}
+                {% block content %}
+                {% endblock %}
             </div>
             <footer class="mdl-mega-footer">
                 <div class="mdl-mega-footer--middle-section">
                     <div class="mdl-mega-footer--drop-down-section">
                         <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
-                        <h1 class="mdl-mega-footer--heading">Contact Us</h1>
+                        <h1 class="mdl-mega-footer--heading">Features</h1>
                         <ul class="mdl-mega-footer--link-list">
-                            <li><a href="#">Email: athena@zeus.com</a></li>
-                            <li><a href="#">Phone No: 9999999999</a></li>
-                            <li><a href="#">Fax: +1-212-9876543</a></li>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Terms</a></li>
+                            <li><a href="#">Partners</a></li>
+                            <li><a href="#">Updates</a></li>
                         </ul>
                     </div>
-                </div>
-                <div class="mdl-mega-footer--bottom-section">
-                    <div class="mdl-logo">
-                        Copyright © |
+                    <div class="mdl-mega-footer--drop-down-section">
+                        <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
+                        <h1 class="mdl-mega-footer--heading">Details</h1>
+                        <ul class="mdl-mega-footer--link-list">
+                            <li><a href="#">Spec</a></li>
+                            <li><a href="#">Tools</a></li>
+                            <li><a href="#">Resources</a></li>
+                        </ul>
                     </div>
-                    <ul class="mdl-mega-footer--link-list">
-                        <li><a href="#">2022 &nbsp; | &nbsp; Athena</a></li>
-                    </ul>
+                    <div class="mdl-mega-footer--drop-down-section">
+                        <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
+                        <h1 class="mdl-mega-footer--heading">Technology</h1>
+                        <ul class="mdl-mega-footer--link-list">
+                            <li><a href="#">How it works</a></li>
+                            <li><a href="#">Patterns</a></li>
+                            <li><a href="#">Usage</a></li>
+                            <li><a href="#">Products</a></li>
+                            <li><a href="#">Contracts</a></li>
+                        </ul>
+                    </div>
+                    <div class="mdl-mega-footer--drop-down-section">
+                        <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
+                        <h1 class="mdl-mega-footer--heading">FAQ</h1>
+                        <ul class="mdl-mega-footer--link-list">
+                            <li><a href="#">Questions</a></li>
+                            <li><a href="#">Answers</a></li>
+                            <li><a href="#">Contact us</a></li>
+                        </ul>
+                    </div>
                 </div>
             </footer>
         </main>
