@@ -16,22 +16,27 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='User',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('username', models.CharField(max_length=50)),
-                ('password', models.CharField(max_length=10, validators=[django.core.validators.MinLengthValidator(10)])),
+                ('password', models.CharField(max_length=10, validators=[
+                 django.core.validators.MinLengthValidator(10)])),
                 ('rating', models.PositiveIntegerField(default=0)),
                 ('status', models.BooleanField(default=True)),
                 ('about', models.CharField(max_length=500)),
                 ('role', models.BooleanField(default=False)),
-                ('profile_pic', models.ImageField(height_field=300, upload_to='', width_field=300)),
+                ('profile_pic', models.ImageField(
+                    height_field=300, upload_to='', width_field=300)),
             ],
         ),
         migrations.CreateModel(
             name='UserEducation',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('edu', models.CharField(max_length=100)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.user')),
+                ('user', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='users.user')),
             ],
         ),
     ]

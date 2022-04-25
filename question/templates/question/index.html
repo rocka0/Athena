@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>
+            Question: {{title}}
+        </title>
+    </head>
+    <body>
+        <div id="content" name = "content">
+            <h1> {{title}} </h1>
+            <h3> {{text}} </h3>
+            <ul>
+                {% for text_comments in answers %}
+                <li> {{text_comments.answer.text}} </li> <br>
+                <ul>
+                    {% for comment in text_comments.comments %}
+                    <li> {{comment.text}} </li> <br>
+                    {% endfor %}
+                </ul>
+                {% endfor %}
+            </ul>
+        </div>
+    </body>
+</html>

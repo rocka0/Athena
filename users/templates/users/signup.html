@@ -1,20 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up Page</title>
-</head>
-<body>
-    <h1>SIGN UP PAGE</h1>
-    <br>
-    
-    <form method="post" action="">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit", name="save">Register</button>
-    </form>
-
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+    <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+        <header class="section__play-btn mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-color--teal-100 mdl-color-text--white">
+            <i class="material-icons">account_box</i>
+        </header>
+        <div class="mdl-card mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="mdl-card__supporting-text">
+                    <h4>Sign Up for Athena</h4>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input"
+                               type="text"
+                               name="username"
+                               id="username"/>
+                        <label class="mdl-textfield__label" for="username">Username</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input"
+                               type="password"
+                               name="password"
+                               id="password"/>
+                        <label class="mdl-textfield__label" for="password">Password</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input"
+                               type="about"
+                               name="about"
+                               id="about"/>
+                        <label class="mdl-textfield__label" for="about">About Me</label>
+                    </div>
+                    {% if not success %}
+                        <br />
+                        <p style="color: red;">
+                            {{ error }}
+                        </p>
+                    {% endif %}
+                </div>
+                <div class="mdl-card__actions">
+                    <br />
+                    <button type="submit"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Sign Up</button>
+                </div>
+                <br />
+            </form>
+        </div>
+    </section>
+    <section class="section--footer mdl-grid">
+    </section>
+{% endblock content %}

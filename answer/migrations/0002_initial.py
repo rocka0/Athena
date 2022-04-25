@@ -18,21 +18,25 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='answercomment',
             name='answer',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='question.question'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='question.question'),
         ),
         migrations.AddField(
             model_name='answercomment',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.user'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='users.user'),
         ),
         migrations.AddField(
             model_name='answer',
             name='question',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='question.question'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='question.question'),
         ),
         migrations.AddField(
             model_name='answer',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.user'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='users.user'),
         ),
     ]

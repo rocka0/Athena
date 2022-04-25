@@ -12,10 +12,12 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddConstraint(
             model_name='user',
-            constraint=models.UniqueConstraint(fields=('username',), name='Unique_Username'),
+            constraint=models.UniqueConstraint(
+                fields=('username',), name='Unique_Username'),
         ),
         migrations.AddConstraint(
             model_name='user',
-            constraint=models.UniqueConstraint(fields=('password',), name='Unique_Password'),
+            constraint=models.UniqueConstraint(
+                fields=('password',), name='Unique_Password'),
         ),
     ]
