@@ -82,3 +82,8 @@ def login(request):
         form = LoginForm()
     context = {"form":form,"success":success,"error" : error}
     return render(request,"users/login.html",context)
+
+def logout(request):
+    response=redirect('index')
+    response.delete_cookie('id')
+    return response
