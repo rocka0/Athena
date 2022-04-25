@@ -3,5 +3,5 @@ from django.shortcuts import render
 # Create your views here.
 
 
-def index(request):
-    return render(request, 'athena/index.html', {})
+def landingPage(request):
+    return render(request, 'athena/landingPage.html', {})

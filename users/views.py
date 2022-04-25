@@ -22,7 +22,7 @@ def get_user(request):
 
     id = request.COOKIES['id']
     user = User.objects.get(id=id)
-    context = {"user": user}
+    context = {"userLoggedIn": True, "user": user}
     return render(request, "users/userProfile.html", context)
 
 # Sign Up Page
@@ -56,7 +56,8 @@ def add_user(request):
             error = "Please fill in details in the format specified."
     else:
         form = SignUpForm()
-    context = {"form": form, "success": success, "error": error}
+    context = {"userLoggedIn": False, "form": form,
+               "success": success, "error": error}
     return render(request, "users/signup.html", context)
 
 # Login Page
@@ -87,5 +88,14 @@ def login(request):
                 error = "No user exists with given username."
     else:
         form = LoginForm()
-    context = {"form": form, "success": success, "error": error}
+    context = {"userLoggedIn": False, "form": form,
+               "success": success, "error": error}
     return render(request, "users/login.html", context)
+
+# Logout Method
+
+
+def logout(request):
+    response = redirect('userLogin')
+    response.delete_cookie('id')
+    return response

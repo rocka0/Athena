@@ -19,7 +19,7 @@ from . import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", views.index, name="index"),
+    path("", views.landingPage, name="landingPage"),
     path("user/", include("users.urls")),
     path("question/", include("question.urls")),
 ]
