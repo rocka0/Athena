@@ -1,3 +1,4 @@
+from urllib import response
 from django.shortcuts import redirect, render
 from django.core.exceptions import ObjectDoesNotExist
 from users.forms import LoginForm, SignUpForm
@@ -58,7 +59,6 @@ def add_user(request):
 def login(request):
     if isUserLoggedIn(request):
         return redirect('profile')
-
     success = True
     error=""
     if (request.method == "POST"):
@@ -87,3 +87,24 @@ def logout(request):
     response=redirect('index')
     response.delete_cookie('id')
     return response
+
+def edit_profile(request):
+    success=True
+    error=""
+    if request.method == 'POST':
+        user = User.objects.get(id=request.COOKIES['id'])
+        data = request.POST
+        try:
+            user['username']=data['username']
+            user['password']=data['password']
+            user['about']=data['about']
+            user.save()
+            response = redirect('profile')
+            return response
+        except Exception as e:
+            error=type(e).__name__
+            success=False     
+    
+    context = {"success":success,"error" : error}
+    return render(request,"edit_profile.html",context)  # update name here
+        
