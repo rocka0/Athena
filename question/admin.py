@@ -1,6 +1,6 @@
 from django.contrib import admin
-from question.models import *
+from .models import *
 
 # Register your models here.
-admin.register(Question)
-admin.register(QuestionComment)
+admin.site.register(Question)
+admin.site.register(QuestionComment)
