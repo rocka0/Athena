@@ -6,14 +6,19 @@
     </head>
     <body>
         <div id="content" name = "content">
-            <h1> {{title}} </h1>
-            <h3> {{text}} </h3>
+            <h1> Question title: {{title}} </h1>
+            <h3> Question text:{{text}} </h3>
+            <ul><ul>
+                {% for question_comments in question_comment %}
+                <li><h4>Question Comment text :{{question_comments.text}}</h4></li>
+                {% endfor %}
+            </ul></ul>
             <ul>
                 {% for text_comments in answers %}
-                <li> {{text_comments.answer.text}} </li> <br>
+                <li> Answer text :{{text_comments.answer.text}} </li> <br>
                 <ul>
                     {% for comment in text_comments.comments %}
-                    <li> {{comment.text}} </li> <br>
+                    <li> Answer comment text :{{comment.text}} </li> <br>
                     {% endfor %}
                 </ul>
                 {% endfor %}
