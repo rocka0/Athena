@@ -37,4 +37,4 @@ def show_question(response, id):
         f'SELECT text, id, timestamp FROM question_questioncomment WHERE question_id={id}'
     )
     context["userLoggedIn"] = True
-    return render(response, "question/index.html", context)
+    return render(response, "question/singleQuestion.html", context)
