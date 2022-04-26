@@ -84,7 +84,6 @@ def login(request):
         form = LoginForm()
     context = {
         "userLoggedIn": False,
-        "form": form,
         "success": success,
         "error": error
     }
@@ -127,12 +126,12 @@ def edit_profile(request):
     if request.method == 'POST':
         data = request.POST
         try:
-            user['username'] = data['username']
-            user['password'] = data['password']
-            user['about'] = data['about']
-            user['profile_pic'] = data['profile_pic']
+            user.username = data['username']
+            user.password = data['password']
+            user.about = data['about']
+            user.profile_pic = data['profile_pic']
             user.save()
-            response = redirect('profile')
+            response = redirect('userProfile')
             return response
         except Exception as e:
             error = type(e).__name__
@@ -143,5 +142,5 @@ def edit_profile(request):
         "user": user,
         "success": success,
         "error": error
-    }        
+    }
     return render(request, "users/editUserProfile.html", context)
