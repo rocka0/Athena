@@ -7,6 +7,8 @@ class Question(models.Model):
     text = models.CharField(max_length=1000)
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    upvotes = models.IntegerField(default=0)
+    downvotes = models.IntegerField(default=0)
 
     class Meta:
         get_latest_by = "timestamp"
@@ -21,6 +23,8 @@ class QuestionComment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    upvotes = models.IntegerField(default=0)
+    downvotes = models.IntegerField(default=0)
 
     class Meta:
         get_latest_by = "timestamp"
