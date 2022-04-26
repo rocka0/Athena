@@ -84,7 +84,6 @@ def login(request):
         form = LoginForm()
     context = {
         "userLoggedIn": False,
-        "form": form,
         "success": success,
         "error": error
     }
