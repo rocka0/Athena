@@ -13,18 +13,6 @@ def isUserLoggedIn(request):
     except:
         return False
 
-# Profile page
-
-
-def get_user(request):
-    if not isUserLoggedIn(request):
-        return redirect('userLogin')
-
-    id = request.COOKIES['id']
-    user = User.objects.get(id=id)
-    context = {"userLoggedIn": True, "user": user}
-    return render(request, "users/userProfile.html", context)
-
 # Sign Up Page
 
 
@@ -99,3 +87,42 @@ def logout(request):
     response = redirect('userLogin')
     response.delete_cookie('id')
     return response
+
+
+# Profile page
+
+
+def get_user(request):
+    if not isUserLoggedIn(request):
+        return redirect('userLogin')
+
+    id = request.COOKIES['id']
+    user = User.objects.get(id=id)
+    context = {"userLoggedIn": True, "user": user}
+    return render(request, "users/userProfile.html", context)
+
+# Edit profile
+
+
+def edit_profile(request):
+    if not isUserLoggedIn(request):
+        return redirect('userLogin')
+
+    success = True
+    error = ""
+    if request.method == 'POST':
+        user = User.objects.get(id=request.COOKIES['id'])
+        data = request.POST
+        try:
+            user['username'] = data['username']
+            user['password'] = data['password']
+            user['about'] = data['about']
+            user.save()
+            response = redirect('profile')
+            return response
+        except Exception as e:
+            error = type(e).__name__
+            success = False
+
+    context = {"success": success, "error": error}
+    return render(request, "users/editUserProfile.html", context)
