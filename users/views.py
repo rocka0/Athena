@@ -4,8 +4,6 @@ from users.forms import LoginForm, SignUpForm
 from .models import User
 
 # Helper method to check if user is logged in
-
-
 def isUserLoggedIn(request):
     try:
         id = request.COOKIES['id']
@@ -14,8 +12,6 @@ def isUserLoggedIn(request):
         return False
 
 # Profile page
-
-
 def get_user(request):
     if not isUserLoggedIn(request):
         return redirect('userLogin')
@@ -26,8 +22,6 @@ def get_user(request):
     return render(request, "users/userProfile.html", context)
 
 # Sign Up Page
-
-
 def add_user(request):
     if isUserLoggedIn(request):
         return redirect('userProfile')
@@ -61,8 +55,6 @@ def add_user(request):
     return render(request, "users/signup.html", context)
 
 # Login Page
-
-
 def login(request):
     if isUserLoggedIn(request):
         return redirect('userProfile')
@@ -99,3 +91,27 @@ def logout(request):
     response = redirect('userLogin')
     response.delete_cookie('id')
     return response
+
+# Edit profile 
+
+def edit_profile(request):
+    success=True
+    error=""
+    if request.method == 'POST':
+        user = User.objects.get(id=request.COOKIES['id'])
+        data = request.POST
+        try:
+            user['username']=data['username']
+            user['password']=data['password']
+            user['about']=data['about']
+            user.save()
+            response = redirect('profile')
+            return response
+        except Exception as e:
+            error=type(e).__name__
+            success=False     
+
+    context = {"success":success,"error" : error}
+    return render(request,"edit_profile.html",context)  # update name here
+    
+
