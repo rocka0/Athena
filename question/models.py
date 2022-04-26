@@ -32,3 +32,8 @@ class QuestionComment(models.Model):
 
     def __str__(self):
         return str(self.text)
+
+class QuestionVote(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    qn_id = models.ForeignKey(Question, on_delete=models.CASCADE)
+    value = models.IntegerField(default=0)
