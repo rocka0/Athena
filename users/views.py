@@ -28,8 +28,10 @@ def add_user(request):
             name = form.cleaned_data['username']
             pwd = form.cleaned_data['password']
             about = form.cleaned_data['about']
+            profile_pic = form.cleaned_data['profile_pic']
             role = False
-            user = User(username=name, password=pwd, about=about, role=role)
+            user = User(username=name, password=pwd, about=about,
+                        role=role, profile_pic=profile_pic)
             try:
                 user.save()
                 response = redirect('userProfile')
@@ -44,8 +46,12 @@ def add_user(request):
             error = "Please fill in details in the format specified."
     else:
         form = SignUpForm()
-    context = {"userLoggedIn": False, "form": form,
-               "success": success, "error": error}
+
+    context = {
+        "userLoggedIn": False,
+        "success": success,
+        "error": error
+    }
     return render(request, "users/signup.html", context)
 
 # Login Page
@@ -76,8 +82,12 @@ def login(request):
                 error = "No user exists with given username."
     else:
         form = LoginForm()
-    context = {"userLoggedIn": False, "form": form,
-               "success": success, "error": error}
+    context = {
+        "userLoggedIn": False,
+        "form": form,
+        "success": success,
+        "error": error
+    }
     return render(request, "users/login.html", context)
 
 # Logout Method
@@ -98,7 +108,10 @@ def get_user(request):
 
     id = request.COOKIES['id']
     user = User.objects.get(id=id)
-    context = {"userLoggedIn": True, "user": user}
+    context = {
+        "userLoggedIn": True,
+        "user": user
+    }
     return render(request, "users/userProfile.html", context)
 
 # Edit profile
@@ -110,13 +123,14 @@ def edit_profile(request):
 
     success = True
     error = ""
+    user = User.objects.get(id=request.COOKIES['id'])
     if request.method == 'POST':
-        user = User.objects.get(id=request.COOKIES['id'])
         data = request.POST
         try:
             user['username'] = data['username']
             user['password'] = data['password']
             user['about'] = data['about']
+            user['profile_pic'] = data['profile_pic']
             user.save()
             response = redirect('profile')
             return response
@@ -124,5 +138,10 @@ def edit_profile(request):
             error = type(e).__name__
             success = False
 
-    context = {"success": success, "error": error}
+    context = {
+        "userLoggedIn": True,
+        "user": user,
+        "success": success,
+        "error": error
+    }        
     return render(request, "users/editUserProfile.html", context)
