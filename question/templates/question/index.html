@@ -1,28 +1,35 @@
-<html>
-    <head>
-        <title>
-            Question: {{title}}
-        </title>
-    </head>
-    <body>
-        <div id="content" name = "content">
-            <h1> Question title: {{title}} </h1>
-            <h3> Question text:{{text}} </h3>
-            <ul><ul>
-                {% for question_comments in question_comment %}
-                <li><h4>Question Comment text :{{question_comments.text}}</h4></li>
-                {% endfor %}
-            </ul></ul>
-            <ul>
-                {% for text_comments in answers %}
-                <li> Answer text :{{text_comments.answer.text}} </li> <br>
-                <ul>
-                    {% for comment in text_comments.comments %}
-                    <li> Answer comment text :{{comment.text}} </li> <br>
-                    {% endfor %}
+{% extends "base.html" %}
+{% block content %}
+    <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="mdl-card__supporting-text">
+                <h3>{{ title }}</h3>
+                <h5>{{ text }}</h5>
+            </div>
+            <div class="mdl-card__actions">
+                <h6>Question Comments:</h6>
+                <ul class="toc">
+                    {% for question_comments in question_comment %}<a>{{ question_comments.text }}</a>{% endfor %}
                 </ul>
-                {% endfor %}
-            </ul>
+            </div>
         </div>
-    </body>
-</html>
+    </section>
+    {% for text_comments in answers %}
+        <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+            <div class="mdl-cell mdl-cell--12-col">
+                <div class="mdl-card__supporting-text">
+                    <h3>{{ text_comments.answer.text }}</h3>
+                    <h5>Posted By:</h5>
+                </div>
+                <div class="mdl-card__actions">
+                    <h6>Answer Comments:</h6>
+                    <ul class="toc">
+                        {% for comment in text_comments.comments %}<a>{{ comment.text }}</a>{% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </section>
+    {% endfor %}
+    <section class="section--footer mdl-color--white mdl-grid">
+    </section>
+{% endblock content %}
