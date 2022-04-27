@@ -22,6 +22,7 @@ urlpatterns = [
     path("", views.landingPage, name="landingPage"),
     path("user/", include("users.urls")),
     path("question/", include("question.urls")),
+    path("answer/",include("answer.urls")),
 ]
 
 admin.site.site_header = "Athena Admin"
