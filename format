@@ -1,2 +1,2 @@
 #!/bin/sh
-find . -name '*.py' -exec python -m autopep8 --in-place '{}' \;
+find . -name '*.py' | xargs -I filename sh -c 'echo "Formatting filename" && python -m autopep8 --in-place filename'

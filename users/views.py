@@ -37,7 +37,7 @@ def add_user(request):
             about = form.cleaned_data['about']
             profile_pic = form.cleaned_data['profile_pic']
             role = False
-            
+
             try:
                 cursor = connection.cursor()
                 cursor.execute(f'''
@@ -45,7 +45,8 @@ def add_user(request):
                     VALUES('{name}', '{pwd_hashed}', '{about}', '{profile_pic}', {role}, 0, True)
                 ''')
 
-                user_id = User.objects.raw(f"SELECT id from users_user where username='{name}'")[0].id
+                user_id = User.objects.raw(
+                    f"SELECT id from users_user where username='{name}'")[0].id
                 response = redirect('userProfile')
                 response.set_cookie('id', user_id)
                 return response
@@ -82,7 +83,8 @@ def login(request):
             name = form.cleaned_data['username']
             pwd = form.cleaned_data['password']
             try:
-                user = User.objects.raw(f"SELECT * from users_user where username='{name}'")[0]
+                user = User.objects.raw(
+                    f"SELECT * from users_user where username='{name}'")[0]
                 if (check_password(pwd, user.password)):
                     response = redirect('userProfile')
                     response.set_cookie('id', user.id)
@@ -118,12 +120,19 @@ def logout(request):
 # Profile page
 
 
-def get_user(request):
+def get_user(request, user_name=""):
     user = isUserLoggedIn(request)
     if not user:
         return redirect('userLogin')
-
-    id = request.COOKIES['id']
+    context = {}
+    if user_name != "":
+        context["userViewed"] = User.objects.raw(
+            f"SELECT * from users_user where username='{user_name}'")[0]
+        id = context["userViewed"].id
+    else:
+        id = request.COOKIES['id']
+        context["userViewed"] = user
+    context["user"] = user
     user = User.objects.raw(f'SELECT * from users_user where id={id}')[0]
     questions = Question.objects.raw(
         f"SELECT id, title, timestamp from question_question where user_id={id} ORDER BY timestamp DESC")
@@ -146,13 +155,11 @@ def get_user(request):
             "timestamp": qc.timestamp,
             "question": qc.question,
         })
-    context = {
-        "userLoggedIn": True,
-        "user": user,
-        "questions": questions,
-        "answers": answers,
-        "comments": comments,
-    }
+
+    context["userLoggedIn"] = True
+    context["questions"] = questions
+    context["answers"] = answers
+    context["comments"] = comments
     return render(request, "users/userProfile.html", context)
 
 # Edit profile
@@ -173,11 +180,11 @@ def edit_profile(request):
             password = make_password(data['password'])
             about = data['about']
             profile_pic = data['profile_pic']
-            
+
             cursor = connection.cursor()
             cursor.execute(f'''UPDATE users_user SET username='{username}', 
             password='{password}', about='{about}', profile_pic='{profile_pic}' where id={user_id}''')
-            
+
             response = redirect('userProfile')
             return response
         except Exception as e:
