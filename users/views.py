@@ -2,6 +2,8 @@ from django.shortcuts import redirect, render
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.hashers import *
 from users.forms import LoginForm, SignUpForm
+from question.models import Question, QuestionComment
+from answer.models import Answer, AnswerComment
 from .models import User
 
 # Helper method to check if user is logged in
@@ -111,9 +113,29 @@ def get_user(request):
 
     id = request.COOKIES['id']
     user = User.objects.get(id=id)
+    questions = Question.objects.raw(f"SELECT id, title, timestamp from question_question where user_id={id}")
+    q_comments = QuestionComment.objects.raw(f"SELECT id, text, timestamp from question_questioncomment where user_id={id}")
+    answers = Answer.objects.raw(f"SELECT id, text, timestamp from answer_answer where user_id={id}")
+    a_comments = AnswerComment.objects.raw(f"SELECT id, text, timestamp from answer_answercomment where user_id={id}")
+    comments = []
+    for ac in a_comments:
+        comments.append({
+            "text":ac.text,
+            "timestamp": ac.timestamp,
+            "question": ac.answer.question,
+        })
+    for qc in q_comments:
+        comments.append({
+            "text":qc.text,
+            "timestamp": qc.timestamp,
+            "question": qc.question,
+        })
     context = {
         "userLoggedIn": True,
-        "user": user
+        "user": user,
+        "questions": questions,
+        "answers": answers,
+        "comments": comments,
     }
     return render(request, "users/userProfile.html", context)
 
