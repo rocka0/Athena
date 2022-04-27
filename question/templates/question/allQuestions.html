@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block pageheader %}
+View All Questions
+{% endblock pageheader %}
+{% block content %}
+{% for question in questions %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ question.title }}</h5>
+                Posted By: <span class="badge bg-primary">@{{ question.user.username }} </span> on <span
+                    class="badge bg-secondary">{{ question.timestamp }}</span>
+                <hr />
+                <button type="button" class="btn btn-success mb-2 " disabled>
+                    <i class="bi bi-arrow-up me-1"></i>
+                    <span class="badge bg-white text-success">UPVOTE_COUNT</span>
+                </button>
+                &nbsp;
+                <button type="button" class="btn btn-danger mb-2" disabled>
+                    <i class="bi bi-arrow-down me-1"></i>
+                    <span class="badge bg-white text-danger">DOWNVOTE_COUNT</span>
+                </button>
+            </div>
+            <div class="card-footer">
+                <a href="{%url 'singleQuestion' id=question.id %}">
+                    <button type="button" class="btn btn-outline-primary">View Question</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock content %}

@@ -1,39 +1,78 @@
 {% extends "base.html" %}
+{% block pageheader %}
+Viewing Question #{{ id }}
+{% endblock pageheader %}
 {% block content %}
-<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-    <header
-        class="section__play-btn mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-color--teal-100 mdl-color-text--white">
-        <i class="material-icons">quiz</i>
-    </header>
-    <div class="mdl-card mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-        <div class="mdl-card__supporting-text">
-            <h3>{{ title }}</h3>
-            <h5>{{ text }}</h5>
-        </div>
-        <div class="mdl-card__actions">
-            <h6>Question Comments:</h6>
-            <ul class="toc">
-                {% for question_comments in question_comment %}<a>{{ question_comments.text }}</a>{% endfor %}
-            </ul>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ question.title }}</h5>
+                Posted By: <span class="badge bg-primary">@{{ question.user.username }} </span> on <span
+                    class="badge bg-secondary">{{ question.timestamp }}</span>
+                <hr />
+                {{ question.text }}
+                <hr />
+                <button type="button" class="btn btn-success mb-2">
+                    <i class="bi bi-arrow-up me-1"></i>
+                    <span class="badge bg-white text-success">UPVOTE_COUNT</span>
+                </button>
+                &nbsp;
+                <button type="button" class="btn btn-danger mb-2">
+                    <i class="bi bi-arrow-down me-1"></i>
+                    <span class="badge bg-white text-danger">DOWNVOTE_COUNT</span>
+                </button>
+            </div>
+            <div class="card-footer">
+                Question Comments:
+                <br />
+                <br />
+                {% for comment in questionComments %}
+                <div class="alert alert-secondary" role="alert">
+                    {{ comment.text }} - <span class="badge bg-primary">Posted By: @{{ comment.user.username }} </span>
+                    on <span class="badge bg-secondary">{{ comment.timestamp }}</span>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
-</section>
-{% for text_comments in answers %}
-<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-    <div class="mdl-cell mdl-cell--12-col">
-        <div class="mdl-card__supporting-text">
-            <h3>{{ text_comments.answer.text }}</h3>
-            <h5>Posted By:</h5>
-        </div>
-        <div class="mdl-card__actions">
-            <h6>Answer Comments:</h6>
-            <ul class="toc">
-                {% for comment in text_comments.comments %}<a>{{ comment.text }}</a>{% endfor %}
-            </ul>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="display-6">Answers:</h1>
+    </div>
+</div>
+{% for answer, comments in answers %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Posted By: @{{ answer.user.username }}</h5>
+                {{ answer.text }}
+                <hr />
+                <button type="button" class="btn btn-success mb-2">
+                    <i class="bi bi-arrow-up me-1"></i>
+                    <span class="badge bg-white text-success">UPVOTE_COUNT</span>
+                </button>
+                &nbsp;
+                <button type="button" class="btn btn-danger mb-2">
+                    <i class="bi bi-arrow-down me-1"></i>
+                    <span class="badge bg-white text-danger">DOWNVOTE_COUNT</span>
+                </button>
+            </div>
+            <div class="card-footer">
+                Answer Comments:
+                <br />
+                <br />
+                {% for comment in comments %}
+                <div class="alert alert-secondary" role="alert">
+                    {{ comment.text }} - <span class="badge bg-primary">Posted By: @{{ comment.user.username }} </span>
+                    on <span class="badge bg-secondary">{{ comment.timestamp }}</span>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
-</section>
+</div>
 {% endfor %}
-<section class="section--footer mdl-color--white mdl-grid">
-</section>
 {% endblock content %}

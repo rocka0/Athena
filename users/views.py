@@ -8,16 +8,16 @@ from .models import User
 
 def isUserLoggedIn(request):
     try:
-        id = request.COOKIES['id']
-        return True
-    except:
+        return User.objects.get(id=request.COOKIES['id'])
+    except Exception as e:
         return False
 
 # Sign Up Page
 
 
 def add_user(request):
-    if isUserLoggedIn(request):
+    user = isUserLoggedIn(request)
+    if user:
         return redirect('userProfile')
 
     success = True
@@ -58,7 +58,8 @@ def add_user(request):
 
 
 def login(request):
-    if isUserLoggedIn(request):
+    user = isUserLoggedIn(request)
+    if user:
         return redirect('userProfile')
 
     success = True
@@ -102,7 +103,8 @@ def logout(request):
 
 
 def get_user(request):
-    if not isUserLoggedIn(request):
+    user = isUserLoggedIn(request)
+    if not user:
         return redirect('userLogin')
 
     id = request.COOKIES['id']
@@ -117,7 +119,8 @@ def get_user(request):
 
 
 def edit_profile(request):
-    if not isUserLoggedIn(request):
+    user = isUserLoggedIn(request)
+    if not user:
         return redirect('userLogin')
 
     success = True
