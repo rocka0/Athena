@@ -73,13 +73,17 @@ def add_question(request):
     if request.method == 'POST':
         form = addQuestionForm(request.POST)
         if form.is_valid():
-            title = form.cleaned_data['title']
-            text = form.cleaned_data['text']
-            cursor = connection.cursor()
-            cursor.execute(f'''INSERT INTO question_question (title, text, user_id, timestamp) 
-                                VALUES('{title}', '{text}', {user_id}, CURRENT_TIMESTAMP)''')
-            # TODO : fill redirect link to go after form is filled
-            return redirect()
+            try:
+                title = form.cleaned_data['title']
+                text = form.cleaned_data['text']
+                cursor = connection.cursor()
+                cursor.execute(f'''INSERT INTO question_question (title, text, user_id, timestamp) 
+                                    VALUES('{title}', '{text}', {user_id}, CURRENT_TIMESTAMP)''')
+                # TODO : fill redirect link to go after form is filled
+                return redirect()
+            except Exception as e:
+                success = False
+                error = type(e).__name__
 
         else:
             success = False
@@ -109,12 +113,15 @@ def add_question_comment(request, question_id):
     if request.method == 'POST':
         form = addQuestionCommentForm(request.POST)
         if form.is_valid():
-            cursor = connection.cursor()
-            text = form.cleaned_data['text']
-            cursor.execute(f'''INSERT INTO question_questioncomment (text, question_id ,user_id, timestamp) 
-                                VALUES('{text}', {question_id}, {user_id}, CURRENT_TIMESTAMP)''')
-            return redirect("question", question_id=question_id)
-
+            try:
+                cursor = connection.cursor()
+                text = form.cleaned_data['text']
+                cursor.execute(f'''INSERT INTO question_questioncomment (text, question_id ,user_id, timestamp) 
+                                    VALUES('{text}', {question_id}, {user_id}, CURRENT_TIMESTAMP)''')
+                return redirect("question", question_id=question_id)
+            except Exception as e:
+                success = False
+                error = type(e).__name__
         else:
             success = False
             error = "Please enter valid text in answer."
@@ -141,12 +148,16 @@ def add_answer(request, question_id):
     if request.method == 'POST':
         form = addAnswerForm(request.POST)
         if form.is_valid():
-            cursor = connection.cursor()
-            text = form.cleaned_data['text']
-            cursor.execute(f'''INSERT INTO answer_answer (text, question_id, user_id, timestamp) 
-                                VALUES('{text}', {question_id}, {user_id}, CURRENT_TIMESTAMP)''')
-            # TODO: redirect to answer link
-            return redirect("")
+            try:
+                cursor = connection.cursor()
+                text = form.cleaned_data['text']
+                cursor.execute(f'''INSERT INTO answer_answer (text, question_id, user_id, timestamp) 
+                                    VALUES('{text}', {question_id}, {user_id}, CURRENT_TIMESTAMP)''')
+                # TODO: redirect to answer link
+                return redirect("")
+            except Exception as e:
+                success = False
+                error = type(e).__name__
         else:
             success = False
             error = "Please enter valid text in answer."
@@ -174,12 +185,16 @@ def add_answer_comment(request, answer_id):
     if request.method == 'POST':
         form = addAnswerCommentForm(request.POST)
         if form.is_valid():
-            cursor = connection.cursor()
-            text = form.cleaned_data['text']
-            cursor.execute(f'''INSERT INTO answer_answercomment (text, answer_id, user_id, timestamp) 
-                            VALUES('{text}', {answer_id}, {user_id}, CURRENT_TIMESTAMP)''')
-            # TODO: redirect to answer link
-            return redirect("")
+            try:
+                cursor = connection.cursor()
+                text = form.cleaned_data['text']
+                cursor.execute(f'''INSERT INTO answer_answercomment (text, answer_id, user_id, timestamp) 
+                                VALUES('{text}', {answer_id}, {user_id}, CURRENT_TIMESTAMP)''')
+                # TODO: redirect to answer link
+                return redirect("")
+            except Exception as e:
+                success = False
+                error = type(e).__name__
         else:
             success = False
             error = "Please enter valid text in answer comment."
@@ -206,15 +221,18 @@ def edit_question(request, question_id):
     if request.method == 'POST':
         form = addQuestionForm(request.POST)
         if form.is_valid():
-            cursor = connection.cursor()
-            title = form.cleaned_data['title']
-            text = form.cleaned_data['text']
-            cursor.execute(f'''UPDATE question_question 
-                            SET title = '{title}', text = '{text}', timestamp = CURRENT_TIMESTAMP
-                            WHERE id={question_id}
-                            ''')
-            return redirect("question", question_id=question_id)
-
+            try:
+                cursor = connection.cursor()
+                title = form.cleaned_data['title']
+                text = form.cleaned_data['text']
+                cursor.execute(f'''UPDATE question_question 
+                                SET title = '{title}', text = '{text}', timestamp = CURRENT_TIMESTAMP
+                                WHERE id={question_id}
+                                ''')
+                return redirect("question", question_id=question_id)
+            except Exception as e:
+                success = False
+                error = type(e).__name__
         else:
             success = False
             error = "Please enter valid text in question."
@@ -240,14 +258,18 @@ def edit_answer(request, question_id, answer_id):
     if request.method == 'POST':
         form = addAnswerForm(request.POST)
         if form.is_valid():
-            cursor = connection.cursor()
-            text = form.cleaned_data['text']
-            cursor.execute(f'''UPDATE answer_answer 
-                            SET text = '{text}', timestamp = CURRENT_TIMESTAMP
-                            WHERE id={answer_id}
-                            ''')
-            # TODO: redirect to answer link
-            return redirect("")
+            try:
+                cursor = connection.cursor()
+                text = form.cleaned_data['text']
+                cursor.execute(f'''UPDATE answer_answer 
+                                SET text = '{text}', timestamp = CURRENT_TIMESTAMP
+                                WHERE id={answer_id}
+                                ''')
+                # TODO: redirect to answer link
+                return redirect("")
+            except Exception as e:
+                success = False
+                error = type(e).__name__
         else:
             success = False
             error = "Please enter valid text in answer."
@@ -347,7 +369,7 @@ def delete_answer_comment(request, question_id, answer_id, answer_comment_id):
             # NOTE: not using sql as foriegn key constraint is not maintained in it
             to_delete = AnswerComment.objects.get(id=answer_comment_id)
             to_delete.delete()
-            #TODO: redirect to answer with given answer_id
+            # TODO: redirect to answer with given answer_id
             return redirect('')
         except Exception as e:
             success = False
