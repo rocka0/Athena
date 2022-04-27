@@ -8,7 +8,7 @@ Question Page
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">{{ question.title }}</h5>
-                Posted By: <span class="badge bg-primary">@{{ question.user.username }} </span> on <span
+                <span class="badge bg-primary">@{{ question.user.username }} </span> on <span
                     class="badge bg-secondary">{{ question.timestamp }}</span>
                 <hr />
                 {{ question.text }}
@@ -24,12 +24,10 @@ Question Page
                 </button>
             </div>
             <div class="card-footer">
-                Question Comments:
-                <br />
-                <br />
+                <h5 class="card-title">Question Comments:</h5>
                 {% for comment in questionComments %}
                 <div class="alert alert-secondary" role="alert">
-                    {{ comment.text }} - <span class="badge bg-primary">Posted By: @{{ comment.user.username }} </span>
+                    {{ comment.text }} - <span class="badge bg-primary">@{{ comment.user.username }} </span>
                     on <span class="badge bg-secondary">{{ comment.timestamp }}</span>
                     {% if comment.user == user %}
                     || <a
@@ -39,12 +37,56 @@ Question Page
                 </div>
                 {% endfor %}
                 <hr />
-                <button class="btn btn-info" type="button" data-bs-toggle="collapse"
+                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse"
                     data-bs-target="#question{{ question.id }}" aria-expanded="false"
                     aria-controls="question{{ question.id }}">
                     Post A Comment
                 </button>
                 {% if user == question.user %}
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                    data-bs-target="#updateQuestion">
+                    Update Question
+                </button>
+                <div class="modal fade" id="updateQuestion" tabindex="-1" aria-labelledby="updateQuestionLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateQuestionLabel">Update Question</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form class="row g-3" action="{% url 'editQuestion' question_id=question.id%}"
+                                method="post">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <div class="col-md-12">
+                                        <div class="form-floating">
+                                            <input type="text" name="title" class="form-control"
+                                                id="floatingEditQuestionTitle" placeholder="New Question Title"
+                                                value="{{ question.title }}" required>
+                                            <label for="floatingEditQuestionTitle">New Question Title</label>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="col-md-12">
+                                        <div class="form-floating">
+                                            <input type="text" name="text" class="form-control"
+                                                id="floatingEditQuestionText" placeholder="New Question Text"
+                                                value="{{ question.text }}" required>
+                                            <label for="floatingEditQuestionText">New Question Text</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard
+                                        Changes</button>
+                                    <button type="submit" class="btn btn-primary">Edit Question</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <a href="{%url 'deleteQuestion' question_id=question.id %}">
                     <button type="button" class="btn btn-outline-danger">Delete Question</button>
                 </a>
@@ -73,7 +115,7 @@ Question Page
 <div class="row">
     <div class="col-md-12">
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#postAnswer">
+        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#postAnswer">
             Post An Answer
         </button>
         <!-- Modal -->
@@ -117,7 +159,7 @@ Question Page
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Posted By: @{{ answer.user.username }}</h5>
+                <h5 class="card-title">@{{ answer.user.username }} has answered:</h5>
                 {{ answer.text }}
                 <hr />
                 <a>
@@ -140,7 +182,7 @@ Question Page
                 <br />
                 {% for comment in comments %}
                 <div class="alert alert-secondary" role="alert">
-                    {{ comment.text }} - <span class="badge bg-primary">Posted By: @{{ comment.user.username }}
+                    {{ comment.text }} - <span class="badge bg-primary">@{{ comment.user.username }}
                     </span>
                     on <span class="badge bg-secondary">{{ comment.timestamp }}</span>
                     {% if comment.user == user %}
@@ -151,11 +193,47 @@ Question Page
                 </div>
                 {% endfor %}
                 <hr />
-                <button class="btn btn-info" type="button" data-bs-toggle="collapse"
+                <button class="btn btn-outline-secondary type=" button" data-bs-toggle="collapse"
                     data-bs-target="#answer{{ answer.id }}" aria-expanded="false" aria-controls="answer{{ answer.id }}">
                     Post A Comment
                 </button>
                 {% if user == answer.user %}
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                    data-bs-target="#updateAnswer{{ answer.id }}">
+                    Update Answer
+                </button>
+                <div class="modal fade" id="updateAnswer{{ answer.id }}" tabindex="-1"
+                    aria-labelledby="updateAnswer{{ answer.id }}Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateAnswer{{ answer.id }}Label">Update Answer</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form class="row g-3"
+                                action="{% url 'editAnswer' question_id=question.id answer_id=answer.id %}"
+                                method="post">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <div class="col-md-12">
+                                        <div class="form-floating">
+                                            <input type="text" name="text" class="form-control"
+                                                id="floatingEditAnswerContent" placeholder="New Answer Content"
+                                                value="{{ answer.text }}" required>
+                                            <label for="floatingEditAnswerContent">New Answer Content</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard
+                                        Changes</button>
+                                    <button type="submit" class="btn btn-primary">Edit Answer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <a href="{%url 'deleteAnswer' question_id=question.id answer_id=answer.id %}">
                     <button type="button" class="btn btn-outline-danger">Delete Answer</button>
                 </a>

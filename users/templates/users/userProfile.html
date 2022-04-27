@@ -20,14 +20,14 @@ User Profile
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">{{question.title}}</h5>
-                                <button type="button" class="btn btn-success mb-2">
+                                <button type="button" class="btn btn-success mb-2 " disabled>
                                     <i class="bi bi-arrow-up me-1"></i>
-                                    <span class="badge bg-white text-success">UPVOTE_COUNT</span>
+                                    <span class="badge bg-white text-success">{{ question.upvoteCount }}</span>
                                 </button>
                                 &nbsp;
-                                <button type="button" class="btn btn-danger mb-2">
+                                <button type="button" class="btn btn-danger mb-2" disabled>
                                     <i class="bi bi-arrow-down me-1"></i>
-                                    <span class="badge bg-white text-danger">DOWNVOTE_COUNT</span>
+                                    <span class="badge bg-white text-danger">{{ question.downvoteCount }}</span>
                                 </button>
                             </div>
                             <div class="card-footer">
