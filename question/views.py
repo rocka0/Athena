@@ -112,7 +112,7 @@ def add_question_comment(request, question_id):
             cursor = connection.cursor()
             text = form.cleaned_data['text']
             cursor.execute(f'''INSERT INTO question_questioncomment (text, question_id ,user_id, timestamp) 
-                                VALUES('{text}', ' {question_id}', {user_id}, CURRENT_TIMESTAMP)''')
+                                VALUES('{text}', {question_id}, {user_id}, CURRENT_TIMESTAMP)''')
             return redirect("question", question_id=question_id)
 
         else:
@@ -177,7 +177,7 @@ def add_answer_comment(request, answer_id):
             cursor = connection.cursor()
             text = form.cleaned_data['text']
             cursor.execute(f'''INSERT INTO answer_answercomment (text, answer_id, user_id, timestamp) 
-                            VALUES({text}, {answer_id}, {user_id}, CURRENT_TIMESTAMP)''')
+                            VALUES('{text}', {answer_id}, {user_id}, CURRENT_TIMESTAMP)''')
             # TODO: redirect to answer link
             return redirect("")
         else:
