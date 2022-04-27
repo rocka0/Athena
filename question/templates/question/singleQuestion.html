@@ -8,7 +8,11 @@ Question Page
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">{{ question.title }}</h5>
-                <span class="badge bg-primary">@{{ question.user.username }} </span> on <span
+                <a href="{% url 'userProfile' user_name=question.user.username %}">
+                <span class="badge bg-primary">
+                    @{{ question.user.username }}
+                </span>
+            </a> on <span
                     class="badge bg-secondary">{{ question.timestamp }}</span>
                 <hr />
                 {{ question.text }}
@@ -27,7 +31,10 @@ Question Page
                 <h5 class="card-title">Question Comments:</h5>
                 {% for comment in questionComments %}
                 <div class="alert alert-secondary" role="alert">
-                    {{ comment.text }} - <span class="badge bg-primary">@{{ comment.user.username }} </span>
+                    {{ comment.text }} - 
+                    <a href="{% url 'userProfile' user_name=comment.user.username %}">
+                    <span class="badge bg-primary">@{{ comment.user.username }} </span>
+                    </a>    
                     on <span class="badge bg-secondary">{{ comment.timestamp }}</span>
                     {% if comment.user == user %}
                     || <a
@@ -159,7 +166,9 @@ Question Page
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">@{{ answer.user.username }} has answered:</h5>
+                <h5 class="card-title">
+                    <a href="{% url 'userProfile' user_name=answer.user.username %}">@{{ answer.user.username }}</a>
+                has answered:</h5>
                 {{ answer.text }}
                 <hr />
                 <button type="button" class="btn btn-success mb-2" id="upvoteAnswer{{ answer.id }}">
@@ -225,8 +234,12 @@ Question Page
                 <br />
                 {% for comment in comments %}
                 <div class="alert alert-secondary" role="alert">
-                    {{ comment.text }} - <span class="badge bg-primary">@{{ comment.user.username }}
-                    </span>
+                    {{ comment.text }} - 
+                    <a href="{% url 'userProfile' user_name=comment.user.username %}">
+                        <span class="badge bg-primary">
+                            @{{ comment.user.username }}
+                        </span>
+                    </a>
                     on <span class="badge bg-secondary">{{ comment.timestamp }}</span>
                     {% if comment.user == user %}
                     || <a

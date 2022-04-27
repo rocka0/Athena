@@ -301,7 +301,6 @@ def delete_question(request, question_id):
             to_delete.delete()
             return redirect('allQuestions')
         except Exception as e:
-            print(e)
             success = False
             error = type(e).__name__
 

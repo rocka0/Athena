@@ -51,7 +51,6 @@ def add_user(request):
                 response.set_cookie('id', user_id)
                 return response
             except Exception as e:
-                print(e)
                 success = False
                 error = type(e).__name__
         else:
@@ -96,7 +95,6 @@ def login(request):
                 success = False
                 error = "No user exists with given username."
             except Exception as e:
-                print(e)
                 success = False
                 error = type(e).__name__
     else:
