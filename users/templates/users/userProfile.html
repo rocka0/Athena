@@ -16,9 +16,10 @@ User Profile
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
                     <div class="accordion-body">
+                        {% for question in questions %}
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">QUESTION TITLE GOES HERE</h5>
+                                <h5 class="card-title">{{question.title}}</h5>
                                 <button type="button" class="btn btn-success mb-2">
                                     <i class="bi bi-arrow-up me-1"></i>
                                     <span class="badge bg-white text-success">UPVOTE_COUNT</span>
@@ -30,9 +31,10 @@ User Profile
                                 </button>
                             </div>
                             <div class="card-footer">
-                                <button type="button" class="btn btn-outline-primary">View Question</button>
+                                <button type="button" class="btn btn-outline-primary" onclick="location.href='{%url 'singleQuestion' id=question.id %}';">View Question</button>
                             </div>
                         </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -42,16 +44,30 @@ User Profile
                         data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                         Your Answers
                     </button>
+
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                     data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the
-                        collapse plugin adds the appropriate classes that we use to style each element. These classes
-                        control the overall appearance, as well as the showing and hiding via CSS transitions. You can
-                        modify any of this with custom CSS or overriding our default variables. It's also worth noting
-                        that just about any HTML can go within the <code>.accordion-body</code>, though the transition
-                        does limit overflow.
+                        {% for answer in answers %}
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{answer.text}}</h5>
+                                <button type="button" class="btn btn-success mb-2">
+                                    <i class="bi bi-arrow-up me-1"></i>
+                                    <span class="badge bg-white text-success">UPVOTE_COUNT</span>
+                                </button>
+                                &nbsp;
+                                <button type="button" class="btn btn-danger mb-2">
+                                    <i class="bi bi-arrow-down me-1"></i>
+                                    <span class="badge bg-white text-danger">DOWNVOTE_COUNT</span>
+                                </button>
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-outline-primary" onclick="location.href='{%url 'singleQuestion' id=answer.question.id %}';">View Answer</button>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -65,12 +81,16 @@ User Profile
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
                     data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the
-                        collapse plugin adds the appropriate classes that we use to style each element. These classes
-                        control the overall appearance, as well as the showing and hiding via CSS transitions. You can
-                        modify any of this with custom CSS or overriding our default variables. It's also worth noting
-                        that just about any HTML can go within the <code>.accordion-body</code>, though the transition
-                        does limit overflow.
+                        {% for comment in comments %}
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{comment.text}}</h5>
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-outline-primary" onclick="location.href='{%url 'singleQuestion' id=comment.question.id %}';">View Coment</button>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
