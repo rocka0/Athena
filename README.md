@@ -16,7 +16,15 @@ pip install -r requirements.txt
 python manage.py runserver 8080
 ```
 
-## Author
+## Authors
+
+👤 **Ashwin Arun**
+
+👤 **Milind Jain**
+
+👤 **Chinmay S Dalal**
+
+* Github: [@p00f](https://github.com/p00f)
 
 👤 **Tushar Chenan**
 

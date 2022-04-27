@@ -1,373 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
-        {% block title %}
-            <title>Athena</title>
-        {% endblock title %}
-        <link rel="stylesheet"
-              href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en"/>
-        <link rel="stylesheet"
-              href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-        <link rel="stylesheet"
-              href="https://code.getmdl.io/1.3.0/material.deep_purple-pink.min.css"/>
-        <style>
-        html,
-        body {
-            font-family: 'Roboto', 'Helvetica', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
 
-        .mdl-demo .mdl-layout__header-row {
-            padding-left: 40px;
-        }
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Athena</title>
+  <meta content="" name="description" />
+  <meta content="" name="keywords" />
+  <!-- Favicons -->
+  <link href="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/img/favicon.png" rel="icon" />
+  <link href="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/img/apple-touch-icon.png"
+    rel="apple-touch-icon" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect" />
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet" />
+  <!-- Vendor CSS Files -->
+  <link href="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/vendor/bootstrap/css/bootstrap.min.css"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" />
+  <link href="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/vendor/boxicons/css/boxicons.min.css"
+    rel="stylesheet" />
+  <link href="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/vendor/quill/quill.snow.css" rel="stylesheet" />
+  <link href="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/vendor/quill/quill.bubble.css"
+    rel="stylesheet" />
+  <link href="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/vendor/remixicon/remixicon.css"
+    rel="stylesheet" />
+  <link href="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/vendor/simple-datatables/style.css"
+    rel="stylesheet" />
+  <!-- Template Main CSS File -->
+  <link href="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/css/style.css" rel="stylesheet" />
+</head>
 
-        .mdl-demo .mdl-layout.is-small-screen .mdl-layout__header-row h3 {
-            font-size: inherit;
-        }
+<body>
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="{% url 'userProfile' %}" class="logo d-flex align-items-center">
+        <img src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/img/logo.png" alt="" />
+        <span class="d-none d-lg-block">Athena</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+    <!-- End Logo -->
+    {% if userLoggedIn %}
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="nav-item dropdown pe-3">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="{{ user.profile_pic }}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ user.username }}</span>
+          </a>
+          <!-- End Profile Iamge Icon -->
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'editUserProfile' %}">
+                <i class="bi bi-gear"></i>
+                <span>Edit Account</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'userLogout' %}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+          </ul>
+          <!-- End Profile Dropdown Items -->
+        </li>
+        <!-- End Profile Nav -->
+      </ul>
+    </nav>
+    {% endif %}
+    <!-- End Icons Navigation -->
+  </header>
+  <!-- End Header -->
+  <!-- ======= Sidebar ======= -->
+  {% if userLoggedIn %}
+  <aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'userProfile' %}">
+          <i class="bi bi-person"></i>
+          <span>User Profile Page</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-patch-question"></i>
+          <span>Questions Dashboard</span>
+        </a>
+      </li>
+      <!-- End User Profile Page Nav -->
+      <li class="nav-heading"> Helpful Links </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-info-square-fill"></i>
+          <span>About Us</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-question-circle-fill"></i>
+          <span>FAQs</span>
+        </a>
+      </li>
+      <!-- End Blank Page Nav -->
+    </ul>
+  </aside>
+  {% else %}
+  <aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'userLogin' %}">
+          <i class="bi bi-person"></i>
+          <span>Log In</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'userSignup' %}">
+          <i class="bi bi-patch-question"></i>
+          <span>Sign Up</span>
+        </a>
+      </li>
+      <!-- End User Profile Page Nav -->
+      <li class="nav-heading"> Helpful Links </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-info-square-fill"></i>
+          <span>About Us</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-question-circle-fill"></i>
+          <span>FAQs</span>
+        </a>
+      </li>
+      <!-- End Blank Page Nav -->
+    </ul>
+  </aside>
+  {% endif %}
+  <!-- End Sidebar-->
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>
+        {% block pageheader %}
+        {% endblock pageheader %}
+      </h1>
+    </div>
+    <!-- End Page Title -->
+    <section class="section dashboard">
+      <div class="row">
+        {% block content %}
+        {% endblock content %}
+      </div>
+    </section>
+  </main>
+  <!-- End #main -->
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright"> &copy; Copyright <strong>
+        <span>Athena</span>
+      </strong>. All Rights Reserved </div>
+  </footer>
+  <!-- End Footer -->
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+  <!-- Vendor JS Files -->
+  <script src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script
+    src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/vendor/chart.js/chart.min.js"></script>
+  <script src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/vendor/echarts/echarts.min.js"></script>
+  <script src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/vendor/quill/quill.min.js"></script>
+  <script
+    src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/vendor/php-email-form/validate.js"></script>
+  <!-- Template Main JS File -->
+  <script src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/js/main.js"></script>
+</body>
 
-        .mdl-demo .mdl-layout__tab-bar-button {
-            display: none;
-        }
-
-        .mdl-demo .mdl-layout.is-small-screen .mdl-layout__tab-bar .mdl-button {
-            display: none;
-        }
-
-        .mdl-demo .mdl-layout:not(.is-small-screen) .mdl-layout__tab-bar,
-        .mdl-demo .mdl-layout:not(.is-small-screen) .mdl-layout__tab-bar-container {
-            overflow: visible;
-        }
-
-        .mdl-demo .mdl-layout__tab-bar-container {
-            height: 64px;
-        }
-
-        .mdl-demo .mdl-layout__tab-bar {
-            padding: 0;
-            padding-left: 16px;
-            box-sizing: border-box;
-            height: 100%;
-            width: 100%;
-        }
-
-        .mdl-demo .mdl-layout__tab-bar .mdl-layout__tab {
-            height: 64px;
-            line-height: 64px;
-        }
-
-        .mdl-demo .mdl-layout__tab-bar .mdl-layout__tab.is-active::after {
-            background-color: white;
-            height: 4px;
-        }
-
-        .mdl-demo main>.mdl-layout__tab-panel {
-            padding: 8px;
-            padding-top: 48px;
-        }
-
-        .mdl-demo .mdl-card {
-            height: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .mdl-demo .mdl-card>* {
-            height: auto;
-        }
-
-        .mdl-demo .mdl-card .mdl-card__supporting-text {
-            margin: 40px;
-            flex-grow: 1;
-            padding: 0;
-            color: inherit;
-            width: calc(100% - 80px);
-        }
-
-        .mdl-demo.mdl-demo .mdl-card__supporting-text h4 {
-            margin-top: 0;
-            margin-bottom: 20px;
-        }
-
-        .mdl-demo .mdl-card__actions {
-            margin: 0;
-            padding: 4px 40px;
-            color: inherit;
-        }
-
-        .mdl-demo .mdl-card__actions a {
-            color: #00BCD4;
-            margin: 0;
-        }
-
-        .mdl-demo .mdl-card__actions a:hover,
-        .mdl-demo .mdl-card__actions a:active {
-            color: inherit;
-            background-color: transparent;
-        }
-
-        .mdl-demo .mdl-card__supporting-text+.mdl-card__actions {
-            border-top: 1px solid rgba(0, 0, 0, 0.12);
-        }
-
-        .mdl-demo #add {
-            position: absolute;
-            right: 40px;
-            top: 36px;
-            z-index: 999;
-        }
-
-        .mdl-demo .mdl-layout__content section:not(:last-of-type) {
-            position: relative;
-            margin-bottom: 48px;
-        }
-
-        .mdl-demo section.section--center {
-            max-width: 860px;
-        }
-
-        .mdl-demo #features section.section--center {
-            max-width: 620px;
-        }
-
-        .mdl-demo section>header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .mdl-demo section>.section__play-btn {
-            min-height: 200px;
-        }
-
-        .mdl-demo section>header>.material-icons {
-            font-size: 3rem;
-        }
-
-        .mdl-demo section>button {
-            position: absolute;
-            z-index: 99;
-            top: 8px;
-            right: 8px;
-        }
-
-        .mdl-demo section .section__circle {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            flex-grow: 0;
-            flex-shrink: 1;
-        }
-
-        .mdl-demo section .section__text {
-            flex-grow: 1;
-            flex-shrink: 0;
-            padding-top: 8px;
-        }
-
-        .mdl-demo section .section__text h5 {
-            font-size: inherit;
-            margin: 0;
-            margin-bottom: 0.5em;
-        }
-
-        .mdl-demo section .section__text a {
-            text-decoration: none;
-        }
-
-        .mdl-demo section .section__circle-container>.section__circle-container__circle {
-            width: 64px;
-            height: 64px;
-            border-radius: 32px;
-            margin: 8px 0;
-        }
-
-        .mdl-demo section.section--footer .section__circle--big {
-            width: 100px;
-            height: 100px;
-            border-radius: 50px;
-            margin: 8px 32px;
-        }
-
-        .mdl-demo .is-small-screen section.section--footer .section__circle--big {
-            width: 50px;
-            height: 50px;
-            border-radius: 25px;
-            margin: 8px 16px;
-        }
-
-        .mdl-demo section.section--footer {
-            padding: 64px 0;
-            margin: 0 -8px -8px -8px;
-        }
-
-        .mdl-demo section.section--center .section__text:not(:last-child) {
-            border-bottom: 1px solid rgba(0, 0, 0, .13);
-        }
-
-        .mdl-demo .mdl-card .mdl-card__supporting-text>h3:first-child {
-            margin-bottom: 24px;
-        }
-
-        .mdl-demo .mdl-layout__tab-panel:not(#overview) {
-            background-color: white;
-        }
-
-        .mdl-demo #features section {
-            margin-bottom: 72px;
-        }
-
-        .mdl-demo #features h4,
-        #features h5 {
-            margin-bottom: 16px;
-        }
-
-        .mdl-demo .toc {
-            border-left: 4px solid #C1EEF4;
-            margin: 24px;
-            padding: 0;
-            padding-left: 8px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .mdl-demo .toc h4 {
-            font-size: 0.9rem;
-            margin-top: 0;
-        }
-
-        .mdl-demo .toc a {
-            color: #4DD0E1;
-            text-decoration: none;
-            font-size: 16px;
-            line-height: 28px;
-            display: block;
-        }
-
-        .mdl-demo .mdl-menu__container {
-            z-index: 99;
-        }
-
-        #view-source {
-            position: fixed;
-            display: block;
-            right: 0;
-            bottom: 0;
-            margin-right: 40px;
-            margin-bottom: 40px;
-            z-index: 900;
-        }
-        </style>
-    </head>
-    <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
-        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-            <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
-                <div class="mdl-layout--large-screen-only mdl-layout__header-row"></div>
-                <div class="mdl-layout--large-screen-only mdl-layout__header-row">
-                    <h3>Athena || Your Q &amp; A Website</h3>
-                </div>
-                <div class="mdl-layout--large-screen-only mdl-layout__header-row"></div>
-                <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
-                    {% if userLoggedIn %}
-                        <a href="#" class="mdl-layout__tab">Questions Dashboard</a>
-                        <a href="{% url 'userProfile' %}" class="mdl-layout__tab">User Profile</a>
-                        <a href="{% url 'userLogout' %}">
-                            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent"
-                                    id="add">
-                                <i class="material-icons" role="presentation">logout</i>
-                                <span class="visuallyhidden">logout</span>
-                            </button>
-                        </a>
-                    {% else %}
-                        <a href="{% url 'userLogin' %}" class="mdl-layout__tab">Log In</a>
-                        <a href="{% url 'userSignup' %}" class="mdl-layout__tab">Sign Up</a>
-                    {% endif %}
-                </div>
-            </header>
-            <main class="mdl-layout__content">
-                <div class="mdl-layout__tab-panel is-active">
-                    {% block content %}
-                    {% endblock content %}
-                </div>
-                <footer class="mdl-mega-footer">
-                    <div class="mdl-mega-footer--middle-section">
-                        <div class="mdl-mega-footer--drop-down-section">
-                            <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked />
-                            <h1 class="mdl-mega-footer--heading">Features</h1>
-                            <ul class="mdl-mega-footer--link-list">
-                                <li>
-                                    <a href="#">About</a>
-                                </li>
-                                <li>
-                                    <a href="#">Terms</a>
-                                </li>
-                                <li>
-                                    <a href="#">Partners</a>
-                                </li>
-                                <li>
-                                    <a href="#">Updates</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mdl-mega-footer--drop-down-section">
-                            <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked />
-                            <h1 class="mdl-mega-footer--heading">Details</h1>
-                            <ul class="mdl-mega-footer--link-list">
-                                <li>
-                                    <a href="#">Spec</a>
-                                </li>
-                                <li>
-                                    <a href="#">Tools</a>
-                                </li>
-                                <li>
-                                    <a href="#">Resources</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mdl-mega-footer--drop-down-section">
-                            <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked />
-                            <h1 class="mdl-mega-footer--heading">Technology</h1>
-                            <ul class="mdl-mega-footer--link-list">
-                                <li>
-                                    <a href="#">How it works</a>
-                                </li>
-                                <li>
-                                    <a href="#">Patterns</a>
-                                </li>
-                                <li>
-                                    <a href="#">Usage</a>
-                                </li>
-                                <li>
-                                    <a href="#">Products</a>
-                                </li>
-                                <li>
-                                    <a href="#">Contracts</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mdl-mega-footer--drop-down-section">
-                            <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked />
-                            <h1 class="mdl-mega-footer--heading">FAQ</h1>
-                            <ul class="mdl-mega-footer--link-list">
-                                <li>
-                                    <a href="#">Questions</a>
-                                </li>
-                                <li>
-                                    <a href="#">Answers</a>
-                                </li>
-                                <li>
-                                    <a href="#">Contact us</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </footer>
-            </main>
-        </div>
-        <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    </body>
 </html>

@@ -1,75 +1,11 @@
 {% extends "base.html" %}
+{% block pageheader %}
+User Profile
+{% endblock pageheader %}
 {% block content %}
-    <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-        <header class="section__play-btn mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-color--purple-100 mdl-color-text--white">
-            <img alt="User PFP"
-                 width="auto"
-                 height="175px"
-                 src="{{ user.profile_pic }}"/>
-        </header>
-        <div class="mdl-card mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-            <div class="mdl-card__supporting-text">
-                <h4>Welcome Back: {{ user.username }}</h4>
-                <h6>About Me: {{ user.about }}</h6>
-                <br />
-                Questions Asked: {{ 0 }}
-                <br />
-                Answers Posted: {{ 0 }}
-                <br />
-                Comments Posted: {{ 0 }}
-                <br />
-                Upvotes Received: {{ 0 }}
-                <br />
-                Downvotes Received: {{ 0 }}
-                <br />
-            </div>
-            <div class="mdl-card__actions">
-                <a href="{% url 'editUserProfile' %}" class="mdl-button">Update Profile</a>
-            </div>
-        </div>
-    </section>
-    <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-        <div class="mdl-card mdl-cell mdl-cell--12-col">
-            <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
-                <h4 class="mdl-cell mdl-cell--12-col">Your Questions</h4>
-                <br />
-                <table style="width: 50%;
-                              margin: 0 auto;"
-                       class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                    <thead>
-                        <tr>
-                            <th>Question Id</th>
-                            <th class="mdl-data-table__cell--non-numeric">Question Title</th>
-                            <th>Upvotes</th>
-                            <th>Downvotes</th>
-                            <th>Comments</th>
-                            <th class="mdl-data-table__cell--non-numeric">View Question</th>
-                            <th class="mdl-data-table__cell--non-numeric">Delete Question</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td class="mdl-data-table__cell--non-numeric">Random Question Title</td>
-                            <td>25</td>
-                            <td>12</td>
-                            <td>42</td>
-                            <td class="mdl-data-table__cell--non-numeric">
-                                <button class="mdl-button mdl-js-button mdl-button--icon">
-                                    <i class="material-icons">visibility</i>
-                                </button>
-                            </td>
-                            <td class="mdl-data-table__cell--non-numeric">
-                                <button class="mdl-button mdl-js-button mdl-button--icon">
-                                    <i class="material-icons">delete</i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-    <section class="section--footer mdl-color--white mdl-grid">
-    </section>
+<div class="row">
+    <div class="col-md-12">
+        User page content goes here
+    </div>
+</div>
 {% endblock content %}

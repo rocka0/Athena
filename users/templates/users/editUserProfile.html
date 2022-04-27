@@ -1,63 +1,48 @@
 {% extends "base.html" %}
+{% block pageheader %}
+Edit User Profile
+{% endblock pageheader %}
 {% block content %}
-    <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-        <div class="mdl-card mdl-cell mdl-cell--12-col">
-            <form method="post" action="">
-                {% csrf_token %}
-                <div class="mdl-card__supporting-text">
-                    <h4>Update your details</h4>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input"
-                               type="text"
-                               name="username"
-                               id="username"
-                               value="{{ user.username }}"/>
-                        <label class="mdl-textfield__label" for="username">Username</label>
-                    </div>
-                    <br />
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input"
-                               type="password"
-                               name="password"
-                               id="password"
-                               value="{{ user.password }}"/>
-                        <label class="mdl-textfield__label" for="password">Password</label>
-                    </div>
-                    <br />
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input"
-                               type="text"
-                               name="about"
-                               id="about"
-                               value="{{ user.about }}"/>
-                        <label class="mdl-textfield__label" for="about">About</label>
-                    </div>
-                    <br />
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input"
-                               type="text"
-                               name="profile_pic"
-                               id="profile_pic"
-                               value="{{ user.profile_pic }}"/>
-                        <label class="mdl-textfield__label" for="profile_pic">pFp URL</label>
-                    </div>
-                    <br />
-                    {% if not success %}
-                        <br />
-                        <p style="color: red;">
-                            {{ error }}
-                        </p>
-                    {% endif %}
-                </div>
-                <div class="mdl-card__actions">
-                    <br />
-                    <button type="submit"
-                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Edit Profile</button>
-                </div>
-                <br />
-            </form>
+<form class="row g-3" action="" method="post">
+    {% csrf_token %}
+    <div class="col-md-12">
+        <div class="form-floating">
+            <input type="text" name="username" class="form-control" id="floatingName" placeholder="Username"
+                value="{{ user.username }}" required>
+            <label for="floatingName">Username</label>
         </div>
-    </section>
-    <section class="section--footer mdl-color--white mdl-grid">
-    </section>
+    </div>
+    <div class="col-md-12">
+        <div class="form-floating">
+            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password"
+                value="{{ user.password }}" required>
+            <label for="floatingPassword">Password</label>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-floating">
+            <input type="text" name="about" class="form-control" id="floatingAbout" placeholder="About You"
+                value="{{ user.about }}" required>
+            <label for="floatingAbout">About You</label>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-floating">
+            <input type="text" name="profile_pic" class="form-control" id="floatingProfilePic"
+                placeholder="Profile Picture URL" value="{{ user.profile_pic }}" required>
+            <label for="floatingProfilePic">Profile Picture URL</label>
+        </div>
+    </div>
+    {% if not success %}
+    <div class="col-md-12">
+        <p style="color: #dc3545;">
+            {{ error }}
+        </p>
+    </div>
+    {% endif %}
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+    </div>
+</form>
 {% endblock content %}
