@@ -18,9 +18,19 @@ def show_question(response, id):
     if len(question_obj) == 0:
         return HttpResponseNotFound('404: Question does not exist')
 
+    upvotes = Question.objects.raw(
+        f''' SELECT COUNT(*) FROM question_questionvote GROUP BY value having value=1'''
+    )
+
+    downvotes = Question.objects.raw(
+        f''' SELECT COUNT(*) FROM question_questionvote GROUP BY value having value=-1'''
+    )
+
     context = {
         "title": question_obj[0].title,
         "text": question_obj[0].text,
+        "upvotes": upvotes,
+        "downvotes": downvotes,
         "question_comments": [],
         "answers": [],
     }

@@ -24,9 +24,7 @@ class AnswerComment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    upvotes = models.IntegerField(default=0)
-    downvotes = models.IntegerField(default=0)
-
+ 
     class Meta:
         get_latest_by = "timestamp"
         ordering = ["-timestamp"]
