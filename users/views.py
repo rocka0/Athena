@@ -176,6 +176,3 @@ def edit_profile(request):
         "error": error
     }
     return render(request, "users/editUserProfile.html", context)
-
-
-

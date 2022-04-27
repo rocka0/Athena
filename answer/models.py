@@ -9,6 +9,16 @@ class Answer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
+    def upvoteCount(self):
+        upv_objs = AnswerVote.objects.raw(
+            f"SELECT * FROM answer_answervote WHERE answer_id={self.id} AND vote_value > 0")
+        return len(upv_objs)
+
+    def downvoteCount(self):
+        dwnv_objs = AnswerVote.objects.raw(
+            f"SELECT * FROM answer_answervote WHERE answer_id={self.id} AND vote_value < 0")
+        return len(dwnv_objs)
+
     def __str__(self):
         return self.text
 

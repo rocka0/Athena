@@ -39,6 +39,7 @@ class User(models.Model):
         except:
             return False
 
+
 class UserEducation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     edu = models.CharField(max_length=100)

@@ -6,6 +6,7 @@ from users.models import User
 
 # Create your views here.
 
+
 def add_vote(request, id):
     val = int(request.GET.get('val'))
 
@@ -14,7 +15,7 @@ def add_vote(request, id):
     )
 
     user_posted_id = user_id[0].user_id
-    
+
     user_posted = User.objects.raw(
         f"SELECT * FROM users_user WHERE id={user_posted_id}"
     )[0]
@@ -40,8 +41,7 @@ def add_vote(request, id):
     cursor.execute(
         f''' INSERT INTO answer_answervote(vote_value,answer_id,user_id) VALUES({val},{id},{user_voted_id}) ''')
 
-    try:
-         user_posted.update_rating(val)
-         return JsonResponse({"success": True})
-    except:
+    if user_posted.update_rating(val):
+        return JsonResponse({"success": True})
+    else:
         return JsonResponse({"success": False})

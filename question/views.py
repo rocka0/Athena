@@ -8,6 +8,7 @@ from .models import *
 from answer.models import Answer, AnswerComment
 from users.views import isUserLoggedIn
 
+
 def show_question(response, id):
     user = isUserLoggedIn(response)
     if not user:
@@ -394,7 +395,7 @@ def add_vote(request, question_id):
     )
 
     user_posted_id = user_id[0].user_id
-    
+
     user_posted = User.objects.raw(
         f"SELECT * FROM users_user WHERE id={user_posted_id}"
     )[0]
