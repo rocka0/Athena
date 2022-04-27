@@ -215,7 +215,8 @@ def add_answer_comment(request, question_id, answer_id):
 
 
 def edit_question(request, question_id):
-    if not isUserLoggedIn(request):
+    user = isUserLoggedIn(request)
+    if not user:
         return redirect('userLogin')
 
     success = True
@@ -232,7 +233,7 @@ def edit_question(request, question_id):
                                 SET title = '{title}', text = '{text}', timestamp = CURRENT_TIMESTAMP
                                 WHERE id={question_id}
                                 ''')
-                return redirect("question", question_id=question_id)
+                return redirect("singleQuestion", id=question_id)
             except Exception as e:
                 success = False
                 error = type(e).__name__
@@ -248,12 +249,12 @@ def edit_question(request, question_id):
         "error": error,
     }
 
-    # TODO : add html file link
-    return render(request, "", context)
+    return redirect("singleQuestion", id=question_id)
 
 
 def edit_answer(request, question_id, answer_id):
-    if not isUserLoggedIn(request):
+    user = isUserLoggedIn(request)
+    if not user:
         return redirect('userLogin')
 
     success = True
@@ -268,8 +269,7 @@ def edit_answer(request, question_id, answer_id):
                                 SET text = '{text}', timestamp = CURRENT_TIMESTAMP
                                 WHERE id={answer_id}
                                 ''')
-                # TODO: redirect to answer link
-                return redirect("")
+                return redirect("singleQuestion", id=question_id)
             except Exception as e:
                 success = False
                 error = type(e).__name__
@@ -285,8 +285,7 @@ def edit_answer(request, question_id, answer_id):
         "error": error,
     }
 
-    # TODO : add html file link
-    return render(request, "", context)
+    return redirect("singleQuestion", id=question_id)
 
 
 def delete_question(request, question_id):
