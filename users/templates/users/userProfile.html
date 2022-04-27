@@ -5,17 +5,26 @@ User Profile
 {% block content %}
 <div class="row justify-content-md-center">
     <div class="col-md-6">
-        <div class="card">
-            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                <img width="250px" height="auto" src="{{ userViewed.profile_pic }}" alt="Profile"
-                    class="rounded-circle" />
-                <h2 style="color: #012970;">@{{ userViewed.username }}</h2>
-                <h3><span style="color: #012970;">About me:</span> {{ userViewed.about }}</h3>
-                {% if userViewed.rating >= 0 %}
-                <h3><span style="color: #012970;">Rating:</span> <span class="badge bg-success">{{ userViewed.rating }}</span></h3>
-                {% else %}
-                <h3><span style="color: #012970;">Rating:</span> <span class="badge bg-danger">{{ userViewed.rating }}</span></h3>
-                {% endif %}
+        <div class="card mb-3">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="{{ userViewed.profile_pic }}" class="img-fluid rounded-start" alt="..." />
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">@{{ userViewed.username }}</h5>
+                        <p class="card-text">About Me: {{ userViewed.about }}</p>
+                        <p class="card-text">
+                            User Education:
+                            {% for edu_item in userViewed.getEducation %}
+                            <span class="badge rounded-pill bg-info text-dark">{{ edu_item.edu }}</span>
+                            {% endfor %}
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        User Rating: <span class="badge bg-success">{{ userViewed.rating }}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

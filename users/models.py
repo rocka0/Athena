@@ -23,6 +23,11 @@ class User(models.Model):
                 fields=['username'], name='Unique_Username'),
         ]
 
+    def getEducation(self):
+        edu_objs = UserEducation.objects.raw(
+            f"SELECT * FROM users_usereducation WHERE user_id={self.id}")
+        return edu_objs
+
     def update_rating(self, val):
         print(self.id)
         target = "rating=rating"

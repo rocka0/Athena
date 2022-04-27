@@ -5,6 +5,7 @@ Edit User Profile
 {% block content %}
 <form class="row g-3" action="" method="post">
     {% csrf_token %}
+    <!-- Username -->
     <div class="col-md-12">
         <div class="form-floating">
             <input type="text" name="username" class="form-control" id="floatingName" placeholder="Username"
@@ -12,6 +13,7 @@ Edit User Profile
             <label for="floatingName">Username</label>
         </div>
     </div>
+    <!-- Password -->
     <div class="col-md-12">
         <div class="form-floating">
             <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password"
@@ -19,6 +21,7 @@ Edit User Profile
             <label for="floatingPassword">Password</label>
         </div>
     </div>
+    <!-- About you -->
     <div class="col-md-12">
         <div class="form-floating">
             <input type="text" name="about" class="form-control" id="floatingAbout" placeholder="About You"
@@ -26,6 +29,7 @@ Edit User Profile
             <label for="floatingAbout">About You</label>
         </div>
     </div>
+    <!-- Profile pic -->
     <div class="col-md-12">
         <div class="form-floating">
             <input type="text" name="profile_pic" class="form-control" id="floatingProfilePic"
@@ -33,6 +37,22 @@ Edit User Profile
             <label for="floatingProfilePic">Profile Picture URL</label>
         </div>
     </div>
+    <!-- Education -->
+    <script type="module">
+        import Tags from "https://cdn.jsdelivr.net/gh/lekoala/bootstrap5-tags@master/tags.js";
+        Tags.init("select");
+    </script>
+
+    <div class="col-md-12">
+        <h4>User Education:</h4>
+        <select class="form-select" id="floatingQual" name="qualifications[]" multiple data-allow-new="true">
+            <option selected disabled hidden value="">Education</option>
+            {% for qual in user_qual %}
+            <option value={{ qual }} selected="selected">{{ qual }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
     {% if not success %}
     <div class="col-md-12">
         <div class="alert alert-danger" role="alert">
@@ -40,6 +60,7 @@ Edit User Profile
         </div>
     </div>
     {% endif %}
+
     <div class="text-center">
         <button type="submit" class="btn btn-primary">Submit</button>
         <button type="reset" class="btn btn-secondary">Reset</button>
