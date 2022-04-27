@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.hashers import *
 from users.forms import LoginForm, SignUpForm
 from .models import User
 
@@ -27,10 +28,11 @@ def add_user(request):
         if form.is_valid():
             name = form.cleaned_data['username']
             pwd = form.cleaned_data['password']
+            pwd_hashed = make_password(pwd)
             about = form.cleaned_data['about']
             profile_pic = form.cleaned_data['profile_pic']
             role = False
-            user = User(username=name, password=pwd, about=about,
+            user = User(username=name, password=pwd_hashed, about=about,
                         role=role, profile_pic=profile_pic)
             try:
                 user.save()
@@ -71,7 +73,7 @@ def login(request):
             pwd = form.cleaned_data['password']
             try:
                 user = User.objects.get(username=name)
-                if (user.password == pwd):
+                if (check_password(pwd, user.password)):
                     response = redirect('userProfile')
                     response.set_cookie('id', user.id)
                     return response

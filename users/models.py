@@ -7,7 +7,7 @@ from django.core.validators import MaxLengthValidator
 
 class User(models.Model):
     username = models.CharField(max_length=50)
-    password = models.CharField(max_length=10, validators=[
+    password = models.CharField(max_length=1000,validators=[
                                 MinLengthValidator(10)])
     rating = models.PositiveIntegerField(default=0)
     status = models.BooleanField(default=True)

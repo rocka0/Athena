@@ -12,9 +12,6 @@ class Question(models.Model):
         get_latest_by = "timestamp"
         ordering = ["-timestamp"]
 
-    def __str__(self):
-        return str(self.title) + "\n\n" + str(self.text)
-
 
 class QuestionComment(models.Model):
     text = models.CharField(max_length=500)
@@ -26,5 +23,8 @@ class QuestionComment(models.Model):
         get_latest_by = "timestamp"
         ordering = ["-timestamp"]
 
-    def __str__(self):
-        return str(self.text)
+
+class QuestionVote(models.Model):
+    vote_value = models.IntegerField(default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
