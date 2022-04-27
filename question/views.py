@@ -1,4 +1,5 @@
 from django.http import HttpResponseNotFound
+from pprint import pprint
 from django.shortcuts import redirect, render
 from .models import *
 from answer.models import Answer, AnswerComment
@@ -38,3 +39,9 @@ def show_question(response, id):
     )
     context["userLoggedIn"] = True
     return render(response, "question/singleQuestion.html", context)
+
+def get_all_questions(response):
+    if not isUserLoggedIn(response):
+        return redirect('userLogin')
+    questions = Question.objects.raw("SELECT * FROM question_question")
+    return render(response, "question/questions.html")
