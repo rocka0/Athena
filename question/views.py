@@ -53,5 +53,5 @@ def get_all_questions(response):
         "questions": questions,
         "userLoggedIn": True
     }
-    
+
     return render(response, "question/allQuestions.html", context=context)

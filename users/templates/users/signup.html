@@ -33,9 +33,9 @@ User SignUp
     </div>
     {% if not success %}
     <div class="col-md-12">
-        <p style="color: #dc3545;">
+        <div class="alert alert-danger" role="alert">
             {{ error }}
-        </p>
+        </div>
     </div>
     {% endif %}
     <div class="text-center">

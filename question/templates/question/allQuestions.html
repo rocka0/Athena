@@ -3,6 +3,44 @@
 View All Questions
 {% endblock pageheader %}
 {% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#askQuestionForm" aria-expanded="false" aria-controls="askQuestionForm">
+                        Ask a question?
+                    </button>
+                </h5>
+                <div class="collapse" id="askQuestionForm">
+                    <hr />
+                    <form class="row g-3" action="" method="post">
+                        {% csrf_token %}
+                        <div class="col-md-12">
+                            <div class="form-floating">
+                                <input type="text" name="title" class="form-control" id="floatingTitle"
+                                    placeholder="Title" required>
+                                <label for="floatingTitle">Title</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating">
+                                <input type="text" name="text" class="form-control" id="floatingQuestionContent"
+                                    placeholder="Question Content" required>
+                                <label for="floatingQuestionContent">Question Content</label>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% for question in questions %}
 <div class="row">
     <div class="col-md-12">

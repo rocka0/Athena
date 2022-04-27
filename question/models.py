@@ -8,6 +8,9 @@ class Question(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         get_latest_by = "timestamp"
         ordering = ["-timestamp"]
@@ -18,6 +21,9 @@ class QuestionComment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.text
 
     class Meta:
         get_latest_by = "timestamp"

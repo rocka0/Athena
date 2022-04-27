@@ -33,13 +33,73 @@ Viewing Question #{{ id }}
                     on <span class="badge bg-secondary">{{ comment.timestamp }}</span>
                 </div>
                 {% endfor %}
+                <hr />
+                <button class="btn btn-info" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#question{{ question.id }}" aria-expanded="false"
+                    aria-controls="question{{ question.id }}">
+                    Post A Comment
+                </button>
+                <div class="collapse" id="question{{ question.id }}">
+                    <br />
+                    <form class="row g-3" action="" method="post">
+                        {% csrf_token %}
+                        <div class="col-md-12">
+                            <div class="form-floating">
+                                <input type="text" name="text" class="form-control" id="floatingText"
+                                    placeholder="Comment Text" required>
+                                <label for="floatingText">Comment Text</label>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
-        <h1 class="display-6">Answers:</h1>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#postAnswer">
+            Post An Answer
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="postAnswer" tabindex="-1" aria-labelledby="postAnswerLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="postAnswerLabel">Post An Answer</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form class="row g-3" action="" method="post">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <textarea type="text" name="text" class="form-control" id="floatingName"
+                                        placeholder="Answer Content" style="height: 100px" required></textarea>
+                                    <label for="floatingName">Answer Content</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard
+                                Changes</button>
+                            <button type="submit" class="btn btn-primary">Submit Answer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <br />
+        <h3>Answers:</h6>
     </div>
 </div>
 {% for answer, comments in answers %}
@@ -70,6 +130,28 @@ Viewing Question #{{ id }}
                     on <span class="badge bg-secondary">{{ comment.timestamp }}</span>
                 </div>
                 {% endfor %}
+                <hr />
+                <button class="btn btn-info" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#answer{{ answer.id }}" aria-expanded="false" aria-controls="answer{{ answer.id }}">
+                    Post A Comment
+                </button>
+                <div class="collapse" id="answer{{ answer.id }}">
+                    <br />
+                    <form class="row g-3" action="" method="post">
+                        {% csrf_token %}
+                        <div class="col-md-12">
+                            <div class="form-floating">
+                                <input type="text" name="text" class="form-control" id="floatingText"
+                                    placeholder="Comment Text" required>
+                                <label for="floatingText">Comment Text</label>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
