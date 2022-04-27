@@ -13,60 +13,76 @@ View All Questions
                         Ask a question?
                     </button>
                 </h5>
+                {% if questionSuccess %}
                 <div class="collapse" id="askQuestionForm">
-                    <hr />
-                    <form class="row g-3" action="" method="post">
-                        {% csrf_token %}
-                        <div class="col-md-12">
-                            <div class="form-floating">
-                                <input type="text" name="title" class="form-control" id="floatingTitle"
-                                    placeholder="Title" required>
-                                <label for="floatingTitle">Title</label>
+                    {% else %}
+                    <div class="collapse show" id="askQuestionForm">
+                        {% endif %}
+                        <hr />
+                        <form class="row g-3" action="{% url 'addQuestion' %}" method="post">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" name="title" class="form-control" id="floatingTitle"
+                                        placeholder="Title" required>
+                                    <label for="floatingTitle">Title</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-floating">
-                                <input type="text" name="text" class="form-control" id="floatingQuestionContent"
-                                    placeholder="Question Content" required>
-                                <label for="floatingQuestionContent">Question Content</label>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" name="text" class="form-control" id="floatingQuestionContent"
+                                        placeholder="Question Content" required>
+                                    <label for="floatingQuestionContent">Question Content</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="reset" class="btn btn-secondary">Reset</button>
-                        </div>
-                    </form>
+                            {% if not questionSuccess %}
+                            <div class="col-md-12">
+                                <div class="alert alert-danger" role="alert">
+                                    {{ questionError }}
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-{% for question in questions %}
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ question.title }}</h5>
-                Posted By: <span class="badge bg-primary">@{{ question.user.username }} </span> on <span
-                    class="badge bg-secondary">{{ question.timestamp }}</span>
-                <hr />
-                <button type="button" class="btn btn-success mb-2 " disabled>
-                    <i class="bi bi-arrow-up me-1"></i>
-                    <span class="badge bg-white text-success">UPVOTE_COUNT</span>
-                </button>
-                &nbsp;
-                <button type="button" class="btn btn-danger mb-2" disabled>
-                    <i class="bi bi-arrow-down me-1"></i>
-                    <span class="badge bg-white text-danger">DOWNVOTE_COUNT</span>
-                </button>
-            </div>
-            <div class="card-footer">
-                <a href="{%url 'singleQuestion' id=question.id %}">
-                    <button type="button" class="btn btn-outline-primary">View Question</button>
-                </a>
+    {% for question in questions %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ question.title }}</h5>
+                    Posted By: <span class="badge bg-primary">@{{ question.user.username }} </span> on <span
+                        class="badge bg-secondary">{{ question.timestamp }}</span>
+                    <hr />
+                    <button type="button" class="btn btn-success mb-2 " disabled>
+                        <i class="bi bi-arrow-up me-1"></i>
+                        <span class="badge bg-white text-success">UPVOTE_COUNT</span>
+                    </button>
+                    &nbsp;
+                    <button type="button" class="btn btn-danger mb-2" disabled>
+                        <i class="bi bi-arrow-down me-1"></i>
+                        <span class="badge bg-white text-danger">DOWNVOTE_COUNT</span>
+                    </button>
+                </div>
+                <div class="card-footer">
+                    <a href="{%url 'singleQuestion' id=question.id %}">
+                        <button type="button" class="btn btn-outline-primary">View Question</button>
+                    </a>
+                    {% if user == question.user %}
+                        <a href="{%url 'deleteQuestion' question_id=question.id %}">
+                            <button type="button" class="btn btn-outline-danger">Delete Question</button>
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
-</div>
-{% endfor %}
-{% endblock content %}
+    {% endfor %}
+    {% endblock content %}

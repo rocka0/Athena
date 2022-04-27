@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block pageheader %}
-Viewing Question #{{ id }}
+Question Page
 {% endblock pageheader %}
 {% block content %}
 <div class="row">
@@ -31,6 +31,9 @@ Viewing Question #{{ id }}
                 <div class="alert alert-secondary" role="alert">
                     {{ comment.text }} - <span class="badge bg-primary">Posted By: @{{ comment.user.username }} </span>
                     on <span class="badge bg-secondary">{{ comment.timestamp }}</span>
+                    {% if comment.user == user %}
+                    || <a href="{% url 'deleteQuestionComment' question_id=question.id question_comment_id=comment.id %}"><span class="badge bg-danger">Delete Comment</span></a>
+                    {% endif %}
                 </div>
                 {% endfor %}
                 <hr />
@@ -41,7 +44,7 @@ Viewing Question #{{ id }}
                 </button>
                 <div class="collapse" id="question{{ question.id }}">
                     <br />
-                    <form class="row g-3" action="" method="post">
+                    <form class="row g-3" action="{% url 'addQuestionComment' question_id=question.id %}" method="post">
                         {% csrf_token %}
                         <div class="col-md-12">
                             <div class="form-floating">

@@ -23,3 +23,7 @@ urlpatterns = [
     path("user/", include("users.urls")),
     path("question/", include("question.urls")),
 ]
+
+admin.site.site_header = "Athena Admin"
+admin.site.site_title = "Athena Admin Portal"
+admin.site.index_title = "Welcome to Athena Portal"

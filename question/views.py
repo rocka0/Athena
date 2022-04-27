@@ -24,11 +24,13 @@ def show_question(response, id):
         question_obj = question_obj[0]
 
     context = {
+        "userLoggedIn": True,
         "user": user,
         "id": id,
         "question": question_obj,
         "questionComments": [],
         "answers": [],
+        "questionCommentSuccess": True,
     }
 
     context["questionComments"] = QuestionComment.objects.raw(
@@ -42,7 +44,6 @@ def show_question(response, id):
             f"SELECT text, id, timestamp FROM answer_answercomment WHERE answer_id={answer.id}")
         context["answers"].append((answer, comments))
 
-    context["userLoggedIn"] = True
     return render(response, "question/singleQuestion.html", context)
 
 
@@ -51,9 +52,12 @@ def get_all_questions(response):
     if not user:
         return redirect('userLogin')
 
-    questions = Question.objects.raw("SELECT * FROM question_question")
+    questions = Question.objects.raw(
+        "SELECT * FROM question_question ORDER BY timestamp DESC")
     context = {
+        "userLoggedIn": True,
         "user": user,
+        "questionSuccess": True,
         "questions": questions,
         "userLoggedIn": True
     }
@@ -67,8 +71,8 @@ def add_question(request):
         return redirect('userLogin')
 
     user_id = request.COOKIES['id']
-    success = True
-    error = ""
+    questionSuccess = True
+    questionError = ""
 
     if request.method == 'POST':
         form = addQuestionForm(request.POST)
@@ -79,26 +83,27 @@ def add_question(request):
                 cursor = connection.cursor()
                 cursor.execute(f'''INSERT INTO question_question (title, text, user_id, timestamp) 
                                     VALUES('{title}', '{text}', {user_id}, CURRENT_TIMESTAMP)''')
-                # TODO : fill redirect link to go after form is filled
-                return redirect()
+                return redirect('allQuestions')
             except Exception as e:
-                success = False
-                error = type(e).__name__
+                questionSuccess = False
+                questionError = type(e).__name__
 
         else:
-            success = False
-            error = "Please enter valid text in answer."
+            questionSuccess = False
+            questionError = "Please enter valid text in answer."
     else:
         form = addQuestionForm()
 
     context = {
+        "userLoggedIn": True,
+        "user": user,
         "form": form,
-        "success": success,
-        "error": error,
+        "questionSuccess": questionSuccess,
+        "questionError": questionError,
+        "questions": Question.objects.raw("SELECT * FROM question_question ORDER BY timestamp DESC")
     }
 
-    # TODO : add html file link
-    return render(request, "", context)
+    return render(request, 'question/allQuestions.html', context)
 
 
 def add_question_comment(request, question_id):
@@ -107,8 +112,8 @@ def add_question_comment(request, question_id):
         return redirect('userLogin')
 
     user_id = request.COOKIES['id']
-    success = True
-    error = ""
+    questionCommentSuccess = True
+    questionCommentError = ""
 
     if request.method == 'POST':
         form = addQuestionCommentForm(request.POST)
@@ -118,24 +123,23 @@ def add_question_comment(request, question_id):
                 text = form.cleaned_data['text']
                 cursor.execute(f'''INSERT INTO question_questioncomment (text, question_id ,user_id, timestamp) 
                                     VALUES('{text}', {question_id}, {user_id}, CURRENT_TIMESTAMP)''')
-                return redirect("question", question_id=question_id)
+                return redirect("singleQuestion", id=question_id)
             except Exception as e:
-                success = False
-                error = type(e).__name__
+                questionCommentSuccess = False
+                questionCommentError = type(e).__name__
         else:
-            success = False
-            error = "Please enter valid text in answer."
+            questionCommentSuccess = False
+            questionCommentError = "Please enter valid text in answer."
     else:
         form = addQuestionCommentForm()
 
     context = {
         "form": form,
-        "success": success,
-        "error": error,
+        "questionCommentSuccess": questionCommentSuccess,
+        "questionCommentError": questionCommentError,
     }
 
-    # TODO : add html file link
-    return render(request, "", context)
+    return redirect("singleQuestion", id=question_id)
 
 
 def add_answer(request, question_id):
@@ -287,27 +291,32 @@ def edit_answer(request, question_id, answer_id):
 
 
 def delete_question(request, question_id):
-    if not isUserLoggedIn(request):
+    user = isUserLoggedIn(request)
+    if not user:
         return redirect('userLogin')
 
     success = True
     error = ""
-    if request.method == 'DELETE':
+    if request.method == 'GET':
         try:
             # NOTE: not using sql as foriegn key constraint is not maintained in it
             to_delete = Question.objects.get(id=question_id)
             to_delete.delete()
-            return redirect('userProfile')
+            return redirect('allQuestions')
         except Exception as e:
+            print(e)
             success = False
             error = type(e).__name__
+
     context = {
+        "userLoggedIn": True,
+        "user": user,
         "success": success,
         "error": error,
+        "questions": Question.objects.raw("SELECT * FROM question_question ORDER BY timestamp DESC")
     }
 
-    # TODO : add html file link
-    return render(request, "", context)
+    return render(request, "question/allQuestions.html", context)
 
 
 def delete_answer(request, question_id, answer_id):
@@ -340,12 +349,12 @@ def delete_question_comment(request, question_id, question_comment_id):
 
     success = True
     error = ""
-    if request.method == 'DELETE':
+    if request.method == 'GET':
         try:
             # NOTE: not using sql as foriegn key constraint is not maintained in it
             to_delete = QuestionComment.objects.get(id=question_comment_id)
             to_delete.delete()
-            return redirect('question', question_id=question_id)
+            return redirect('singleQuestion', id=question_id)
         except Exception as e:
             success = False
             error = type(e).__name__
@@ -354,8 +363,7 @@ def delete_question_comment(request, question_id, question_comment_id):
         "error": error,
     }
 
-    # TODO : add html file link
-    return render(request, "", context)
+    return redirect('singleQuestion', id=question_id)
 
 
 def delete_answer_comment(request, question_id, answer_id, answer_comment_id):
