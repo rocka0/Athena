@@ -1,5 +1,4 @@
 from django.http import HttpResponseNotFound
-from pprint import pprint
 from django.shortcuts import redirect, render
 from .models import *
 from answer.models import Answer, AnswerComment
