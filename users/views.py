@@ -184,9 +184,11 @@ def update_rating(id, val):
         target += "+"
     else:
         target += "-"
-
-    cursor = connection.cursor()
-    cursor.execute(
-        f''' UPDATE users_user SET {target}{abs(val)} WHERE id={id} '''
-    )
-    return True
+    try:
+        cursor = connection.cursor()
+        cursor.execute(
+            f''' UPDATE users_user SET {target}{abs(val)} WHERE id={id} '''
+        )
+        return True
+    except:
+        return False
