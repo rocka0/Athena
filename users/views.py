@@ -113,20 +113,24 @@ def get_user(request):
 
     id = request.COOKIES['id']
     user = User.objects.get(id=id)
-    questions = Question.objects.raw(f"SELECT id, title, timestamp from question_question where user_id={id}")
-    q_comments = QuestionComment.objects.raw(f"SELECT id, text, timestamp from question_questioncomment where user_id={id}")
-    answers = Answer.objects.raw(f"SELECT id, text, timestamp from answer_answer where user_id={id}")
-    a_comments = AnswerComment.objects.raw(f"SELECT id, text, timestamp from answer_answercomment where user_id={id}")
+    questions = Question.objects.raw(
+        f"SELECT id, title, timestamp from question_question where user_id={id} ORDER BY timestamp DESC")
+    q_comments = QuestionComment.objects.raw(
+        f"SELECT id, text, timestamp from question_questioncomment where user_id={id} ORDER BY timestamp ASC")
+    answers = Answer.objects.raw(
+        f"SELECT id, text, timestamp from answer_answer where user_id={id} ORDER BY timestamp DESC")
+    a_comments = AnswerComment.objects.raw(
+        f"SELECT id, text, timestamp from answer_answercomment where user_id={id} ORDER BY timestamp ASC")
     comments = []
     for ac in a_comments:
         comments.append({
-            "text":ac.text,
+            "text": ac.text,
             "timestamp": ac.timestamp,
             "question": ac.answer.question,
         })
     for qc in q_comments:
         comments.append({
-            "text":qc.text,
+            "text": qc.text,
             "timestamp": qc.timestamp,
             "question": qc.question,
         })
