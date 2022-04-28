@@ -1,9 +1,5 @@
 from django.db import connection, models
 from django.core.validators import MinLengthValidator
-from django.core.validators import MaxLengthValidator
-from answer.models import AnswerVote
-
-from question.models import QuestionVote
 
 # Create your models here.
 
@@ -28,6 +24,7 @@ class User(models.Model):
         ]
 
     def update_rating(self, val):
+        print(self.id)
         target = "rating=rating"
         if val > 0:
             target += "+"

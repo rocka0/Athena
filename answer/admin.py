@@ -3,3 +3,4 @@ from .models import *
 
 admin.site.register(Answer)
 admin.site.register(AnswerComment)
+admin.site.register(AnswerVote)
