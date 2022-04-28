@@ -1,3 +1,5 @@
+
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.db import connection
 
@@ -6,7 +8,7 @@ from answer.models import Answer
 from answer.forms import *
 from .models import *
 from answer.models import Answer, AnswerComment
-from users.views import isUserLoggedIn
+from users.views import isUserLoggedIn, update_rating
 
 
 def show_question(response, id):
@@ -386,3 +388,35 @@ def delete_answer_comment(request, question_id, answer_id, answer_comment_id):
     }
 
     return redirect('singleQuestion', id=question_id)
+
+
+def add_vote(request, id):
+    val = int(request.GET.get('val'))
+
+    user_id = Question.objects.raw(
+        f"SELECT * FROM question_question WHERE id={id}"
+    )
+
+    user_posted = user_id[0].user_id
+
+    user_id = Question.objects.raw(
+        f"SELECT * FROM users_user WHERE id={request.COOKIES['id']}"
+    )
+
+    user_voted = user_id[0].id
+
+    qv_obj = QuestionVote.objects.raw(
+        f"SELECT * FROM question_questionvote WHERE question_id={id} AND user_id={user_voted} ")
+
+    if len(qv_obj) > 0:
+        print("here")
+        return JsonResponse({"success": False})
+
+    cursor = connection.cursor()
+    cursor.execute(
+        f''' INSERT INTO question_questionvote(vote_value,question_id,user_id) VALUES({val},{id},{user_voted}) ''')
+
+    if update_rating(user_posted, val):
+        return JsonResponse({"success": True})
+    else:
+        return JsonResponse({"success": False})
