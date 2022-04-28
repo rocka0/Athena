@@ -13,14 +13,14 @@ Question Page
                 <hr />
                 {{ question.text }}
                 <hr />
-                <button type="button" class="btn btn-success mb-2">
+                <button type="button" class="btn btn-success mb-2" id="upvoteQuestion">
                     <i class="bi bi-arrow-up me-1"></i>
-                    <span class="badge bg-white text-success">UPVOTE_COUNT</span>
+                    <span class="badge bg-white text-success">{{ question.upvoteCount }}</span>
                 </button>
                 &nbsp;
-                <button type="button" class="btn btn-danger mb-2">
+                <button type="button" class="btn btn-danger mb-2" id="downvoteQuestion">
                     <i class="bi bi-arrow-down me-1"></i>
-                    <span class="badge bg-white text-danger">DOWNVOTE_COUNT</span>
+                    <span class="badge bg-white text-danger">{{ question.downvoteCount }}</span>
                 </button>
             </div>
             <div class="card-footer">
@@ -120,15 +120,19 @@ Question Page
                 <h5 class="card-title">Posted By: @{{ answer.user.username }}</h5>
                 {{ answer.text }}
                 <hr />
-                <button type="button" class="btn btn-success mb-2">
-                    <i class="bi bi-arrow-up me-1"></i>
-                    <span class="badge bg-white text-success">UPVOTE_COUNT</span>
-                </button>
+                <a>
+                    <button type="button" class="btn btn-success mb-2">
+                        <i class="bi bi-arrow-up me-1"></i>
+                        <span class="badge bg-white text-success">{{ answer.upvoteCount }}</span>
+                    </button>
+                </a>
                 &nbsp;
-                <button type="button" class="btn btn-danger mb-2">
-                    <i class="bi bi-arrow-down me-1"></i>
-                    <span class="badge bg-white text-danger">DOWNVOTE_COUNT</span>
-                </button>
+                <a>
+                    <button type="button" class="btn btn-danger mb-2">
+                        <i class="bi bi-arrow-down me-1"></i>
+                        <span class="badge bg-white text-danger">{{ answer.downvoteCount }}</span>
+                    </button>
+                </a>
             </div>
             <div class="card-footer">
                 Answer Comments:
@@ -136,7 +140,8 @@ Question Page
                 <br />
                 {% for comment in comments %}
                 <div class="alert alert-secondary" role="alert">
-                    {{ comment.text }} - <span class="badge bg-primary">Posted By: @{{ comment.user.username }} </span>
+                    {{ comment.text }} - <span class="badge bg-primary">Posted By: @{{ comment.user.username }}
+                    </span>
                     on <span class="badge bg-secondary">{{ comment.timestamp }}</span>
                     {% if comment.user == user %}
                     || <a
@@ -178,4 +183,51 @@ Question Page
     </div>
 </div>
 {% endfor %}
+<script>
+    $(document).ready(() => {
+        const upvoteQuestion = async () => {
+            const url = window.location + "vote?val=1";
+            const res = await axios.get(url);
+            if (res.data.success === true) {
+                swal({
+                    title: "Success!",
+                    text: "You upvoted the question!",
+                    icon: "success",
+                }).then(() => {
+                    window.location.reload(true);
+                });
+            }
+            else {
+                swal({
+                    title: "Invalid!",
+                    text: "You cannot upvote this question!",
+                    icon: "error",
+                });
+            }
+        };
+        document.getElementById("upvoteQuestion").addEventListener("click", upvoteQuestion, false);
+
+        const downvoteQuestion = async () => {
+            const url = window.location + "vote?val=-1"
+            const res = await axios.get(url);
+            if (res.data.success === true) {
+                swal({
+                    title: "Success!",
+                    text: "You downvoted the question!",
+                    icon: "success",
+                }).then(() => {
+                    window.location.reload(true);
+                });
+            }
+            else {
+                swal({
+                    title: "Invalid!",
+                    text: "You cannot downvote this question!",
+                    icon: "error",
+                });
+            }
+        };
+        document.getElementById("downvoteQuestion").addEventListener("click", downvoteQuestion, false);
+    });
+</script>
 {% endblock content %}

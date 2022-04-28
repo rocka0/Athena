@@ -19,5 +19,5 @@ urlpatterns = [
          views.add_answer_comment, name="addAnswerComment"),
     path("<int:question_id>/answer/<int:answer_id>/comment/<int:answer_comment_id>/delete",
          views.delete_answer_comment, name="deleteAnswerComment"),
-    path("<int:id>/vote/", views.add_vote, name="addQuestionVote")
+    path("<int:question_id>/vote/", views.add_vote, name="addQuestionVote")
 ]

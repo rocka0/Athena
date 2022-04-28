@@ -1,4 +1,3 @@
-
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.db import connection
@@ -390,11 +389,11 @@ def delete_answer_comment(request, question_id, answer_id, answer_comment_id):
     return redirect('singleQuestion', id=question_id)
 
 
-def add_vote(request, id):
+def add_vote(request, question_id):
     val = int(request.GET.get('val'))
 
     user_id = Question.objects.raw(
-        f"SELECT * FROM question_question WHERE id={id}"
+        f"SELECT * FROM question_question WHERE id={question_id}"
     )
 
     user_posted = user_id[0].user_id
@@ -406,15 +405,18 @@ def add_vote(request, id):
     user_voted = user_id[0].id
 
     qv_obj = QuestionVote.objects.raw(
-        f"SELECT * FROM question_questionvote WHERE question_id={id} AND user_id={user_voted} ")
-
-    if len(qv_obj) > 0:
-        print("here")
-        return JsonResponse({"success": False})
+        f"SELECT * FROM question_questionvote WHERE question_id={question_id} AND user_id={user_voted} ")
 
     cursor = connection.cursor()
+
+    if len(qv_obj) > 0 and qv_obj[0].vote_value == val:
+        return JsonResponse({"success": False})
+    elif len(qv_obj) > 0:
+        cursor.execute(
+            f''' DELETE FROM question_questionvote WHERE question_id={question_id} AND user_id={user_voted} ''')
+
     cursor.execute(
-        f''' INSERT INTO question_questionvote(vote_value,question_id,user_id) VALUES({val},{id},{user_voted}) ''')
+        f''' INSERT INTO question_questionvote(vote_value,question_id,user_id) VALUES({val},{question_id},{user_voted}) ''')
 
     if update_rating(user_posted, val):
         return JsonResponse({"success": True})

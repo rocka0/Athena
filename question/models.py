@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import connection, models
 from users.models import User
 
 
@@ -7,6 +7,16 @@ class Question(models.Model):
     text = models.CharField(max_length=1000)
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def upvoteCount(self):
+        upv_objs = QuestionVote.objects.raw(
+            f"SELECT * FROM question_questionvote WHERE question_id={self.id} AND vote_value > 0")
+        return len(upv_objs)
+
+    def downvoteCount(self):
+        dwnv_objs = QuestionVote.objects.raw(
+            f"SELECT * FROM question_questionvote WHERE question_id={self.id} AND vote_value < 0")
+        return len(dwnv_objs)
 
     def __str__(self):
         return self.title

@@ -63,12 +63,12 @@ View All Questions
                     <hr />
                     <button type="button" class="btn btn-success mb-2 " disabled>
                         <i class="bi bi-arrow-up me-1"></i>
-                        <span class="badge bg-white text-success">UPVOTE_COUNT</span>
+                        <span class="badge bg-white text-success">{{ question.upvoteCount }}</span>
                     </button>
                     &nbsp;
                     <button type="button" class="btn btn-danger mb-2" disabled>
                         <i class="bi bi-arrow-down me-1"></i>
-                        <span class="badge bg-white text-danger">DOWNVOTE_COUNT</span>
+                        <span class="badge bg-white text-danger">{{ question.downvoteCount }}</span>
                     </button>
                 </div>
                 <div class="card-footer">
@@ -76,9 +76,9 @@ View All Questions
                         <button type="button" class="btn btn-outline-primary">View Question</button>
                     </a>
                     {% if user == question.user %}
-                        <a href="{%url 'deleteQuestion' question_id=question.id %}">
-                            <button type="button" class="btn btn-outline-danger">Delete Question</button>
-                        </a>
+                    <a href="{%url 'deleteQuestion' question_id=question.id %}">
+                        <button type="button" class="btn btn-outline-danger">Delete Question</button>
+                    </a>
                     {% endif %}
                 </div>
             </div>
