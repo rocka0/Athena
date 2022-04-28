@@ -178,15 +178,4 @@ def edit_profile(request):
     return render(request, "users/editUserProfile.html", context)
 
 
-def update_rating(id, val):
-    target = "rating=rating"
-    if val > 0:
-        target += "+"
-    else:
-        target += "-"
 
-    cursor = connection.cursor()
-    cursor.execute(
-        f''' UPDATE users_user SET {target}{abs(val)} WHERE id={id} '''
-    )
-    return True

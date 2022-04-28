@@ -1,6 +1,5 @@
-from django.db import models
+from django.db import connection, models
 from django.core.validators import MinLengthValidator
-from django.core.validators import MaxLengthValidator
 
 # Create your models here.
 
@@ -9,7 +8,7 @@ class User(models.Model):
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=1000, validators=[
                                 MinLengthValidator(10)])
-    rating = models.PositiveIntegerField(default=0)
+    rating = models.IntegerField(default=0)
     status = models.BooleanField(default=True)
     about = models.CharField(max_length=500)
     role = models.BooleanField()
@@ -22,10 +21,23 @@ class User(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['username'], name='Unique_Username'),
-            models.UniqueConstraint(
-                fields=['password'], name='Unique_Password')
         ]
 
+    def update_rating(self, val):
+        print(self.id)
+        target = "rating=rating"
+        if val > 0:
+            target += "+"
+        else:
+            target += "-"
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                f''' UPDATE users_user SET {target}{abs(val)} WHERE id={self.id} '''
+            )
+            return True
+        except:
+            return False
 
 class UserEducation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
