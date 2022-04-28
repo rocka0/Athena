@@ -1,6 +1,9 @@
-from django.db import models
+from django.db import connection, models
 from django.core.validators import MinLengthValidator
 from django.core.validators import MaxLengthValidator
+from answer.models import AnswerVote
+
+from question.models import QuestionVote
 
 # Create your models here.
 
@@ -22,10 +25,22 @@ class User(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['username'], name='Unique_Username'),
-            models.UniqueConstraint(
-                fields=['password'], name='Unique_Password')
         ]
 
+    def update_rating(self, val):
+        target = "rating=rating"
+        if val > 0:
+            target += "+"
+        else:
+            target += "-"
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                f''' UPDATE users_user SET {target}{abs(val)} WHERE id={self.id} '''
+            )
+            return True
+        except:
+            return False
 
 class UserEducation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

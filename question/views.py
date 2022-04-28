@@ -1,14 +1,12 @@
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.db import connection
-
 from .forms import *
 from answer.models import Answer
 from answer.forms import *
 from .models import *
 from answer.models import Answer, AnswerComment
-from users.views import isUserLoggedIn, update_rating
-
+from users.views import isUserLoggedIn
 
 def show_question(response, id):
     user = isUserLoggedIn(response)
@@ -396,7 +394,7 @@ def add_vote(request, question_id):
         f"SELECT * FROM question_question WHERE id={question_id}"
     )
 
-    user_posted = user_id[0].user_id
+    user_posted = user_id[0]
 
     user_id = Question.objects.raw(
         f"SELECT * FROM users_user WHERE id={request.COOKIES['id']}"
@@ -414,11 +412,12 @@ def add_vote(request, question_id):
     elif len(qv_obj) > 0:
         cursor.execute(
             f''' DELETE FROM question_questionvote WHERE question_id={question_id} AND user_id={user_voted} ''')
+        user_posted.update_rating(-val)
 
     cursor.execute(
         f''' INSERT INTO question_questionvote(vote_value,question_id,user_id) VALUES({val},{question_id},{user_voted}) ''')
 
-    if update_rating(user_posted, val):
+    if user_posted.update_rating(val):
         return JsonResponse({"success": True})
     else:
         return JsonResponse({"success": False})
