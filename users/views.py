@@ -118,12 +118,19 @@ def logout(request):
 # Profile page
 
 
-def get_user(request):
+def get_user(request ,user_name=""):
     user = isUserLoggedIn(request)
     if not user:
         return redirect('userLogin')
-
-    id = request.COOKIES['id']
+    context = {}
+    if user_name != "":
+        context["userViewed"] = User.objects.raw(f"SELECT * from users_user where username='{user_name}'")[0]
+        id = context["userViewed"].id
+        context["user"] = User.objects.raw(f"SELECT * from users_user where id={request.COOKIES['id']}")[0]
+    else:
+        id = request.COOKIES['id']
+        context["userViewed"] = user
+        context["user"] = user
     user = User.objects.raw(f'SELECT * from users_user where id={id}')[0]
     questions = Question.objects.raw(
         f"SELECT id, title, timestamp from question_question where user_id={id} ORDER BY timestamp DESC")
@@ -145,14 +152,12 @@ def get_user(request):
             "text": qc.text,
             "timestamp": qc.timestamp,
             "question": qc.question,
-        })
-    context = {
-        "userLoggedIn": True,
-        "user": user,
-        "questions": questions,
-        "answers": answers,
-        "comments": comments,
-    }
+        })           
+
+    context["userLoggedIn"] = True
+    context["questions"] = questions
+    context["answers"] = answers
+    context["comments"] = comments
     return render(request, "users/userProfile.html", context)
 
 # Edit profile
