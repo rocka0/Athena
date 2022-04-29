@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import *
 from users.forms import LoginForm, SignUpForm
 from question.models import Question, QuestionComment
 from answer.models import Answer, AnswerComment
-from .models import User
+from .models import User, UserEducation
 
 # Helper method to check if user is logged in
 
@@ -173,6 +173,11 @@ def edit_profile(request):
     success = True
     error = ""
     user_id = request.COOKIES['id']
+    user_qual_obj = UserEducation.objects.raw(
+        f"SELECT * FROM users_usereducation WHERE user_id={user_id}")
+    user_qual = []
+    for obj in user_qual_obj:
+        user_qual.append(obj.edu)
     if request.method == 'POST':
         data = request.POST
         try:
@@ -180,10 +185,16 @@ def edit_profile(request):
             password = make_password(data['password'])
             about = data['about']
             profile_pic = data['profile_pic']
+            qualifications = data.getlist('qualifications[]')
 
             cursor = connection.cursor()
-            cursor.execute(f'''UPDATE users_user SET username='{username}', 
+            cursor.execute(f'''UPDATE users_user SET username='{username}',
             password='{password}', about='{about}', profile_pic='{profile_pic}' where id={user_id}''')
+
+            cursor.execute("DELETE FROM users_usereducation")
+            for q in qualifications:
+                cursor.execute(
+                    f''' INSERT INTO users_usereducation(user_id, edu) VALUES({user_id},'{q}') ''')
 
             response = redirect('userProfile')
             return response
@@ -194,6 +205,7 @@ def edit_profile(request):
     context = {
         "userLoggedIn": True,
         "user": user,
+        "user_qual": user_qual,
         "success": success,
         "error": error
     }
